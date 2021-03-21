@@ -75,3 +75,5 @@ IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider,
 IStorage storage = new Storage(serializationProvider, encryptedFileProvider);
 //The rest as in common usage
 ```
+# License
+The software released under the terms of the [MIT license](./LICENSE.md).
