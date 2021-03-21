@@ -1,0 +1,1 @@
+Utility classes for managing local data saved on device.
