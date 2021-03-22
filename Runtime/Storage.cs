@@ -5,7 +5,7 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class Storage : IStorage
+    public class Storage
     {
         private readonly ISerializationProvider _serializationProvider;
         private readonly IFileProvider _fileProvider;
