@@ -26,7 +26,7 @@ ISerializationProvider serializationProvider = new UnityJsonSerializationProvide
 //File save/load implementation
 IFileProvider fileProvider = new FileProvider();
 
-IStorage storage = new Storage(serializationProvider, fileProvider);
+var storage = new Storage(serializationProvider, fileProvider);
 
 //Resulting path will be Application.persistentDataPath/fileName.extension
 var fileName = "fileName.extension";
@@ -73,7 +73,7 @@ IFileProvider fileProvider = new FileProvider();
 IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, 
     new ExampleEncryptionSettings());
 
-IStorage storage = new Storage(serializationProvider, encryptedFileProvider);
+var storage = new Storage(serializationProvider, encryptedFileProvider);
 //The rest as in common usage
 ```
 # License
