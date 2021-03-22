@@ -1,5 +1,6 @@
 # Description
 Configurable generic class for managing local data saved on device.
+Unity 2020.1+
 
 ## Features
 - One generic class with configuration options for data read/write and serialization/deserialization.
