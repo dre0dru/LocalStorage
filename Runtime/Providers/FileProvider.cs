@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -11,15 +10,15 @@ namespace LocalStorage.Providers
         private readonly string _path;
 
         [RequiredMember]
-        public FileProvider() : this(Application.persistentDataPath)
+        public FileProvider() : this(null)
         {
         }
 
         public FileProvider(string path)
         {
             _path = string.IsNullOrEmpty(path)
-                ? throw new ArgumentNullException(nameof(path))
-                : path;
+                ? Application.persistentDataPath
+                : Path.Combine(Application.persistentDataPath, path);
         }
 
         public void Write(byte[] output, string fileName)
