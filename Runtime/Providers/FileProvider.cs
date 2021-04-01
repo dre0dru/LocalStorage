@@ -8,18 +8,18 @@ namespace LocalStorage.Providers
 {
     public class FileProvider : IFileProvider
     {
-        private readonly string _filePath;
+        private readonly string _path;
 
         [RequiredMember]
         public FileProvider() : this(Application.persistentDataPath)
         {
         }
 
-        public FileProvider(string filePath)
+        public FileProvider(string path)
         {
-            _filePath = string.IsNullOrEmpty(filePath)
-                ? throw new ArgumentNullException(nameof(filePath))
-                : filePath;
+            _path = string.IsNullOrEmpty(path)
+                ? throw new ArgumentNullException(nameof(path))
+                : path;
         }
 
         public void Write(byte[] output, string fileName)
@@ -72,7 +72,7 @@ namespace LocalStorage.Providers
 
         public string GetFilePath(string fileName)
         {
-            return Path.Combine(_filePath, fileName);
+            return Path.Combine(_path, fileName);
         }
 
         public bool FileExists(string fileName)
