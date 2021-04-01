@@ -4,12 +4,18 @@ namespace LocalStorage
 {
     public interface IFileProvider
     {
-        void Write(byte[] output, string filePath);
+        void Write(byte[] output, string fileName);
 
-        Task WriteAsync(byte[] output, string filePath);
+        Task WriteAsync(byte[] output, string fileName);
 
-        byte[] Read(string filePath);
+        byte[] Read(string fileName);
 
-        Task<byte[]> ReadAsync(string filePath);
+        Task<byte[]> ReadAsync(string fileName);
+        
+        bool Delete(string fileName);
+
+        string GetFilePath(string fileName);
+
+        bool FileExists(string fileName);
     }
 }

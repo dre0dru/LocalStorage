@@ -15,22 +15,20 @@ namespace LocalStorage.Encryption
         {
             _fileProvider = fileProvider ??
                             throw new ArgumentNullException(nameof(fileProvider));
-            ;
             _encryptionSettings = encryptionSettings ??
                                   throw new ArgumentNullException(nameof(encryptionSettings));
-            ;
         }
 
-        public void Write(byte[] output, string filePath)
+        public void Write(byte[] output, string fileName)
         {
             var encrypted = Encrypt(output);
-            _fileProvider.Write(encrypted, filePath);
+            _fileProvider.Write(encrypted, fileName);
         }
 
-        public Task WriteAsync(byte[] output, string filePath)
+        public Task WriteAsync(byte[] output, string fileName)
         {
             var encrypted = Encrypt(output);
-            return _fileProvider.WriteAsync(encrypted, filePath);
+            return _fileProvider.WriteAsync(encrypted, fileName);
         }
 
         private byte[] Encrypt(byte[] data)
@@ -39,15 +37,15 @@ namespace LocalStorage.Encryption
                 _encryptionSettings.InitializationVector);
         }
 
-        public byte[] Read(string filePath)
+        public byte[] Read(string fileName)
         {
-            var bytes = _fileProvider.Read(filePath);
+            var bytes = _fileProvider.Read(fileName);
             return Decrypt(bytes);
         }
 
-        public async Task<byte[]> ReadAsync(string filePath)
+        public async Task<byte[]> ReadAsync(string fileName)
         {
-            var bytes = await _fileProvider.ReadAsync(filePath);
+            var bytes = await _fileProvider.ReadAsync(fileName);
             return Decrypt(bytes);
         }
 
@@ -55,6 +53,21 @@ namespace LocalStorage.Encryption
         {
             return AesEncryption.Decrypt(data, _encryptionSettings.Key,
                 _encryptionSettings.InitializationVector);
+        }
+
+        public bool Delete(string fileName)
+        {
+            return _fileProvider.Delete(fileName);
+        }
+
+        public string GetFilePath(string fileName)
+        {
+            return _fileProvider.GetFilePath(fileName);
+        }
+
+        public bool FileExists(string fileName)
+        {
+            return _fileProvider.FileExists(fileName);
         }
     }
 }
