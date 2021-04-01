@@ -9,13 +9,14 @@ Unity 2020.1+
 - Json serialization provider that uses JsonUtility for serialization.
 - Options to create your own file/serialization providers.
 - Saves files to `Application.persistentDataPath`.
+- Async/sync API.
 
 # Installation
 This package can be installed as unity module directly from git url in two ways:
 - By adding following line in `Packages/manifest.json`:
-`"com.dre0dru.localstorage": "https://github.com/dre0dru/LocalStorage.git#upm",`
+```"com.dre0dru.localstorage": "https://github.com/dre0dru/LocalStorage.git#upm",```
 - By using `Window/Package Manager/Add package from git URL...` in Unity:
-`https://github.com/dre0dru/LocalStorage.git#upm`
+```https://github.com/dre0dru/LocalStorage.git#upm```
   
 # Usage
 ## Common usage
@@ -23,19 +24,32 @@ This package can be installed as unity module directly from git url in two ways:
 //Serialization/deserialization implementation
 ISerializationProvider serializationProvider = new UnityJsonSerializationProvider();
 
+//Path to save/load from (optional)
+string path = "dataFolder";  //Resulting path will be Application.persistentDataPath/dataFolder
 //File save/load implementation
-IFileProvider fileProvider = new FileProvider();
+IFileProvider fileProvider = new FileProvider(path);
 
 var storage = new Storage(serializationProvider, fileProvider);
 
-//Resulting path will be Application.persistentDataPath/fileName.extension
-var fileName = "fileName.extension";
+string fileName = "fileName.extension";
+
+//Resulting path will be Application.persistentDataPath/dataFolder/fileName.extension
+string filePath = storage.GetFilePath(fileName);
 
 //Serializes data then saves file
 storage.Save(new Vector2(1.0f, 1.0f), fileName);
 
+//Async saving
+await storage.SaveAsync(new Vector2(1.0f, 1.0f), fileName);
+
+//Check if file exists
+bool exists = storage.FileExists(fileName);
+
 //Loads file then deserializes data
 Vector2 deserialized = storage.Load<Vector2>(fileName);
+
+//Async loading
+Vector2 deserialized = await storage.LoadAsync<Vector2>(fileName);
 
 //Deletes file if present
 storage.Delete(fileName);
@@ -63,10 +77,10 @@ public class ExampleEncryptionSettings : IEncryptionSettings
 - Use `EncryptedFileProvider`:
 ```c#
 ISerializationProvider serializationProvider = new UnityJsonSerializationProvider();
+IFileProvider fileProvider = new FileProvider();
 
 //Encryption settings for AES
 IEncryptionSettings encryptionSettings = new ExampleEncryptionSettings();
-IFileProvider fileProvider = new FileProvider();
 
 //File save/load implementation with encryption
 //Just a wrapper around IFileProvider with encryption before save/after load
@@ -75,6 +89,24 @@ IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider,
 
 var storage = new Storage(serializationProvider, encryptedFileProvider);
 //The rest as in common usage
+```
+## Generic storage usage
+Best used with DI containers to bind `Storage` with different `ISerializationProvider`/`IFileProvider`:
+```c#
+ISerializationProvider jsonSerializationProvider = new UnityJsonSerializationProvider();
+IFileProvider fileProvider = new FileProvider();
+
+var jsonStorage = new Storage<UnityJsonSerializationProvider, FileProvider>(
+    jsonSerializationProvider, fileProvider
+);
+
+IEncryptionSettings encryptionSettings = new ExampleEncryptionSettings();
+IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, 
+    new ExampleEncryptionSettings());
+
+var encryptedJsonStorage = new Storage<UnityJsonSerializationProvider, EncryptedFileProvider>(
+    jsonSerializationProvider, encryptedFileProvider
+);
 ```
 # License
 The software released under the terms of the [MIT license](./LICENSE.md).
