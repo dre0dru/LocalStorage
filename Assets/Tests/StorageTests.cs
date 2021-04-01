@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace LocalStorage.Tests
 {
     [TestFixture]
-    public class StorageTests : TestsBase
+    public class StorageTests
     {
         private static ISerializationProvider SerializationProvider
         {
@@ -34,26 +34,6 @@ namespace LocalStorage.Tests
             {
                 var storage = new Storage(serializationProvider, fileProvider);
             });
-        }
-
-        [Test]
-        public void Storage_GetFilePath()
-        {
-            var storage = new Storage(SerializationProvider, FileProvider);
-
-            Assert.AreEqual(storage.GetFilePath(Helpers.FileName), Helpers.FilePath);
-        }
-
-        [Test]
-        public void Storage_IsFileExists()
-        {
-            var storage = new Storage(SerializationProvider, FileProvider);
-
-            Assert.IsFalse(storage.FileExists(Helpers.FileName));
-
-            Helpers.CreateFile();
-
-            Assert.IsTrue(storage.FileExists(Helpers.FileName));
         }
     }
 }

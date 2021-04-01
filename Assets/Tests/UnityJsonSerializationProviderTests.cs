@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LocalStorage.Tests
 {
     [TestFixture]
-    public class UnityJsonSerializationProviderTests: TestsBase
+    public class UnityJsonSerializationProviderTests
     {
         private readonly ISerializationProvider _serializationProvider
             = new UnityJsonSerializationProvider();
