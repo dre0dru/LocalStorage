@@ -11,12 +11,6 @@ namespace LocalStorage.Tests
     {
         private static readonly IFileProvider FileProvider = new FileProvider();
 
-        private static IEnumerable<string> _argumentNullExceptionCases()
-        {
-            yield return null;
-            yield return string.Empty;
-        }
-
         [SetUp]
         public virtual void SetUp()
         {
@@ -95,15 +89,6 @@ namespace LocalStorage.Tests
                 .GetAwaiter().GetResult();
 
             Assert.AreEqual(data, result);
-        }
-
-        [TestCaseSource(nameof(_argumentNullExceptionCases))]
-        public void FileProvider_ThrowsArgumentNullException(string filePath)
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var fileProvider = new FileProvider(filePath);
-            });
         }
     }
 }
