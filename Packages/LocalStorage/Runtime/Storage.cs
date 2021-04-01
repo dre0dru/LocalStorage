@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.Scripting;
 
 namespace LocalStorage
@@ -47,23 +45,17 @@ namespace LocalStorage
 
         public bool Delete(string fileName)
         {
-            if (FileExists(fileName))
-            {
-                File.Delete(GetFilePath(fileName));
-                return true;
-            }
-
-            return false;
+            return _fileProvider.Delete(fileName);
         }
 
         public string GetFilePath(string fileName)
         {
-            return Path.Combine(Application.persistentDataPath, fileName);
+            return _fileProvider.GetFilePath(fileName);
         }
 
         public bool FileExists(string fileName)
         {
-            return File.Exists(GetFilePath(fileName));
+            return _fileProvider.FileExists(fileName);
         }
     }
 
