@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
