@@ -15,7 +15,6 @@ jobs:
         mkdir -p docs
         cp "$PKG_ROOT"/"$README_FILE" ./docs/
         git add ./docs/"$README_FILE"
-        git commit -m "docs: updated readme and license" --author="github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" || echo "No changes to commit"
       env:
         PKG_ROOT: Packages/LocalStorage
         LICENSE_FILE: LICENSE.md
