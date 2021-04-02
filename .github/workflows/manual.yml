@@ -8,6 +8,18 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Copy readme and license
+      run: |
+        cp "$PKG_ROOT"/"$LICENSE_FILE" ./
+        git add "$LICENSE_FILE"
+        mkdir -p docs
+        cp "$PKG_ROOT"/"$README_FILE" ./docs/
+        git add ./docs/"$README_FILE"
+        git commit -m "docs: updated readme and license" --author="github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" || echo "No changes to commit"
+      env:
+        PKG_ROOT: Packages/LocalStorage
+        LICENSE_FILE: LICENSE.md
+        README_FILE: README.md
     - name: Semantic release
       id: semantic
       uses: cycjimmy/semantic-release-action@v2.5.3
