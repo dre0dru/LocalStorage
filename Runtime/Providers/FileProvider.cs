@@ -19,6 +19,11 @@ namespace LocalStorage.Providers
             _path = string.IsNullOrEmpty(path)
                 ? Application.persistentDataPath
                 : Path.Combine(Application.persistentDataPath, path);
+            
+            if (Directory.Exists(_path) == false)
+            {
+                Directory.CreateDirectory(_path);
+            }
         }
 
         public void Write(byte[] output, string fileName)
