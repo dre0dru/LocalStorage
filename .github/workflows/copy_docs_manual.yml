@@ -8,10 +8,10 @@ jobs:
       - name: Copy readme and license
         run: |
           ls
-          cp -v -u /"$PKG_ROOT"/"$LICENSE_FILE" "$LICENSE_FILE"
+          cp -v -u "$PKG_ROOT"/"$LICENSE_FILE" "$LICENSE_FILE"
           git add "$LICENSE_FILE"
           mkdir -p docs
-          cp -v -u /"$PKG_ROOT"/"$README_FILE" /docs/"$README_FILE"
+          cp -v -u "$PKG_ROOT"/"$README_FILE" /docs/"$README_FILE"
           git add /docs/"$README_FILE"
         env:
           PKG_ROOT: Packages/LocalStorage
