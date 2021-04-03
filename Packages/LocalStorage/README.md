@@ -14,13 +14,13 @@ Unity 2020.1+
 # Installation
 This package can be installed as unity module directly from git url in two ways:
 - By adding following line in `Packages/manifest.json`:
-  ```
-  "com.dre0dru.localstorage": "https://github.com/dre0dru/LocalStorage.git#upm",
-  ```
+```
+"com.dre0dru.localstorage": "https://github.com/dre0dru/LocalStorage.git#upm",
+```
 - By using `Window/Package Manager/Add package from git URL...` in Unity:
-  ```
-  https://github.com/dre0dru/LocalStorage.git#upm
-  ```
+```
+https://github.com/dre0dru/LocalStorage.git#upm
+```
   
 # Usage
 ## Common usage
