@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Copy readme and license
-      - run: |
+        run: |
           cp "$PKG_ROOT"/"$LICENSE_FILE" ./
           git add "$LICENSE_FILE"
           mkdir -p docs
@@ -21,12 +21,12 @@ jobs:
           LICENSE_FILE: LICENSE.md
           README_FILE: README.md
       - name: Commit files
-      run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git commit -m "docs: updated readme and license" || echo "No changes to commit"
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "docs: updated readme and license" || echo "No changes to commit"
       - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
