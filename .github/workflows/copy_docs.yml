@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Copy readme and license
         run: |
-          cp -v -u "$PKG_ROOT"/"$LICENSE_FILE" /"$LICENSE_FILE"
+          cp -v -p "$PKG_ROOT"/"$LICENSE_FILE" "$LICENSE_FILE"
           git add "$LICENSE_FILE"
           mkdir -p docs
-          cp -v -u "$PKG_ROOT"/"$README_FILE" /docs/"$README_FILE"
-          git add /docs/"$README_FILE"
+          cp -v -p "$PKG_ROOT"/"$README_FILE" docs/"$README_FILE"
+          git add docs/"$README_FILE"
         env:
           PKG_ROOT: Packages/LocalStorage
           LICENSE_FILE: LICENSE.md
