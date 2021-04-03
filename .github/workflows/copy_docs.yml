@@ -16,7 +16,7 @@ jobs:
           mkdir -p docs
           cp -v -u "$PKG_ROOT"/"$README_FILE" /docs/"$README_FILE"
           git add /docs/"$README_FILE"
-          env:
+        env:
           PKG_ROOT: Packages/LocalStorage
           LICENSE_FILE: LICENSE.md
           README_FILE: README.md
