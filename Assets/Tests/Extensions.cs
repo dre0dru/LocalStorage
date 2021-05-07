@@ -1,4 +1,6 @@
+using System.IO.Compression;
 using System.Text;
+using LocalStorage.Compression;
 using LocalStorage.Encryption;
 using UnityEngine;
 
@@ -29,6 +31,26 @@ namespace LocalStorage.Tests
         public static byte[] Decrypt(this byte[] bytes)
         {
             return AesEncryption.Decrypt(bytes, Constants.Es.Key, Constants.Es.InitializationVector);
+        }
+
+        public static byte[] WriteGZip(this byte[] bytes)
+        {
+            return Compress.WriteGZip(bytes);
+        }
+
+        public static byte[] ReadGzip(this byte[] bytes)
+        {
+            return Compress.ReadGZip(bytes);
+        }
+        
+        public static byte[] WriteDeflate(this byte[] bytes)
+        {
+            return Compress.WriteDeflate(bytes);
+        }
+
+        public static byte[] ReadDeflate(this byte[] bytes)
+        {
+            return Compress.ReadDeflate(bytes);
         }
     }
 }

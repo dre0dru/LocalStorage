@@ -5,8 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "LocalStorage",
-        "LocalStorage.Providers",
-        "LocalStorage.Encryption"
+        "LocalStorage.Encryption",
+        "LocalStorage.Compression"
     ],
     "includePlatforms": [
         "Editor"

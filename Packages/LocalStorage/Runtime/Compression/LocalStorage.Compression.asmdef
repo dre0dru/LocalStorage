@@ -1,0 +1,16 @@
+{
+    "name": "LocalStorage.Compression",
+    "rootNamespace": "LocalStorage",
+    "references": [
+        "GUID:9549a63ebfcdeef4aa33998d26c2b07c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
