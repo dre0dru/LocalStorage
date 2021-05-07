@@ -5,9 +5,9 @@ Unity 2020.1+
 ## Features
 - One generic class with configuration options for data read/write and serialization/deserialization.
 - Simple file provider that just reads/writes data.
-- Encrypted file provider that uses AES encryption to preprocess data.
-- Json serialization provider that uses JsonUtility for serialization.
-- Options to create your own file/serialization providers.
+- Encrypted file provider that uses `AES` encryption to preprocess data.
+- Compressed file provider that uses `GZip` or `Deflate` to compress/decompress data.
+- Json serialization provider that uses `JsonUtility` for serialization.
 - Saves files to `Application.persistentDataPath`.
 - Async/sync API.
 
@@ -92,6 +92,24 @@ IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider,
     new ExampleEncryptionSettings());
 
 var storage = new Storage(serializationProvider, encryptedFileProvider);
+//The rest as in common usage
+```
+## Combining file providers
+Multiple `IFileProvider` implementations can be used together to process data when loading/saving:
+```c#
+ISerializationProvider serializationProvider = new UnityJsonSerializationProvider();
+IFileProvider fileProvider = new FileProvider();
+
+//Encryption settings for AES
+IEncryptionSettings encryptionSettings = new ExampleEncryptionSettings();
+IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, encryptionSettings);
+
+//Using this file provider will result in following:
+//Data being first encrypted then compressed when saving
+//Data being first uncompressed then decrypted when loading
+IFileProvider compressedEncryptedFileProvider = new GZipFileProvider(encryptedFileProvider);
+
+var storage = new Storage(serializationProvider, compressedEncryptedFileProvider);
 //The rest as in common usage
 ```
 ## Generic storage usage
