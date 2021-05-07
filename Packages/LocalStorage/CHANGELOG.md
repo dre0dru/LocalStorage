@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/dre0dru/LocalStorage/compare/v2.0.0...v2.1.0) (2021-05-07)
+
+
+### Features
+
+* added compressed data provider ([e7d3ed7](https://github.com/dre0dru/LocalStorage/commit/e7d3ed7f3524f2b279ec9295b2c6e27555f2ffbb))
+
 # [2.0.0](https://github.com/dre0dru/LocalStorage/compare/v1.0.0...v2.0.0) (2021-04-02)
 
 
