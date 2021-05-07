@@ -10,16 +10,10 @@ namespace LocalStorage.Encryption
         {
             if (dataToEncrypt == null || dataToEncrypt.Length <= 0)
                 throw new ArgumentNullException(nameof(dataToEncrypt));
-            if (key == null || key.Length <= 0)
-                throw new ArgumentNullException(nameof(key));
-            if (initializationVector == null || initializationVector.Length <= 0)
-                throw new ArgumentNullException(nameof(initializationVector));
 
-            using var aes = Aes.Create();
-            aes.Key = key;
-            aes.IV = initializationVector;
+            using var aes = CreateAes(key, initializationVector);
 
-            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
             return PerformCryptography(dataToEncrypt, encryptor);
         }
@@ -28,27 +22,36 @@ namespace LocalStorage.Encryption
         {
             if (encryptedData == null || encryptedData.Length <= 0)
                 throw new ArgumentNullException(nameof(encryptedData));
+            
+            using var aes = CreateAes(key, initializationVector);
+
+            using var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+            return PerformCryptography(encryptedData, decryptor);
+        }
+
+        private static Aes CreateAes(byte[] key, byte[] initializationVector)
+        {
             if (key == null || key.Length <= 0)
                 throw new ArgumentNullException(nameof(key));
             if (initializationVector == null || initializationVector.Length <= 0)
                 throw new ArgumentNullException(nameof(initializationVector));
-
-            using var aes = Aes.Create();
+            
+            var aes = Aes.Create();
             aes.Key = key;
             aes.IV = initializationVector;
-
-            var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
-            return PerformCryptography(encryptedData, decryptor);
+            return aes;
         }
 
         private static byte[] PerformCryptography(byte[] data, ICryptoTransform cryptoTransform)
         {
             using var msDecrypt = new MemoryStream();
-            using var csDecrypt = new CryptoStream(msDecrypt, cryptoTransform, CryptoStreamMode.Write);
-            csDecrypt.Write(data, 0, data.Length);
-            csDecrypt.FlushFinalBlock();
-
+            using (var csDecrypt = new CryptoStream(msDecrypt, cryptoTransform, CryptoStreamMode.Write))
+            {
+                csDecrypt.Write(data, 0, data.Length);
+                csDecrypt.FlushFinalBlock();
+            }
+            
             return msDecrypt.ToArray();
         }
     }
