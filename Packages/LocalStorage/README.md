@@ -33,7 +33,7 @@ string path = "dataFolder";  //Resulting path will be Application.persistentData
 //File save/load implementation
 IFileProvider fileProvider = new FileProvider(path);
 
-var storage = new Storage(serializationProvider, fileProvider);
+IStorage storage = new Storage(serializationProvider, fileProvider);
 
 string fileName = "fileName.extension";
 
@@ -91,7 +91,7 @@ IEncryptionSettings encryptionSettings = new ExampleEncryptionSettings();
 IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, 
     new ExampleEncryptionSettings());
 
-var storage = new Storage(serializationProvider, encryptedFileProvider);
+IStorage storage = new Storage(serializationProvider, encryptedFileProvider);
 //The rest as in common usage
 ```
 ## Combining file providers
@@ -109,26 +109,27 @@ IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, en
 //Data being first uncompressed then decrypted when loading
 IFileProvider compressedEncryptedFileProvider = new GZipFileProvider(encryptedFileProvider);
 
-var storage = new Storage(serializationProvider, compressedEncryptedFileProvider);
+IStorage storage = new Storage(serializationProvider, compressedEncryptedFileProvider);
 //The rest as in common usage
 ```
 ## Generic storage usage
 Best used with DI containers to bind `Storage` with different `ISerializationProvider`/`IFileProvider`:
 ```c#
-ISerializationProvider jsonSerializationProvider = new UnityJsonSerializationProvider();
-IFileProvider fileProvider = new FileProvider();
+UnityJsonSerializationProvider jsonSerializationProvider = 
+    new UnityJsonSerializationProvider();
+FileProvider fileProvider = new FileProvider();
 
-var jsonStorage = new Storage<UnityJsonSerializationProvider, FileProvider>(
-    jsonSerializationProvider, fileProvider
-);
+IStorage<UnityJsonSerializationProvider, FileProvider> jsonStorage = 
+    new Storage<UnityJsonSerializationProvider, FileProvider>(
+    jsonSerializationProvider, fileProvider);
 
 IEncryptionSettings encryptionSettings = new ExampleEncryptionSettings();
-IFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, 
+EncryptedFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProvider, 
     new ExampleEncryptionSettings());
 
-var encryptedJsonStorage = new Storage<UnityJsonSerializationProvider, EncryptedFileProvider>(
-    jsonSerializationProvider, encryptedFileProvider
-);
+IStorage<UnityJsonSerializationProvider, EncryptedFileProvider> encryptedJsonStorage = 
+    new Storage<UnityJsonSerializationProvider, EncryptedFileProvider>(
+j   sonSerializationProvider, encryptedFileProvider);
 ```
 # License
 The software released under the terms of the [MIT license](./LICENSE.md).
