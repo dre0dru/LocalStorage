@@ -4,7 +4,7 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class Storage
+    public class Storage : IStorage
     {
         private readonly ISerializationProvider _serializationProvider;
         private readonly IFileProvider _fileProvider;
@@ -59,7 +59,7 @@ namespace LocalStorage
         }
     }
 
-    public class Storage<TSerialization, TFile> : Storage
+    public class Storage<TSerialization, TFile> : Storage, IStorage<TSerialization, TFile>
         where TSerialization : ISerializationProvider where TFile : IFileProvider
     {
         [RequiredMember]
