@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/dre0dru/LocalStorage/compare/v2.1.0...v2.2.0) (2021-05-08)
+
+
+### Features
+
+* reintroduced `IStorage` interface for service abstraction ([8153927](https://github.com/dre0dru/LocalStorage/commit/8153927ea81bf3244e648e88854c96172a611c3d))
+
 # [2.1.0](https://github.com/dre0dru/LocalStorage/compare/v2.0.0...v2.1.0) (2021-05-07)
 
 

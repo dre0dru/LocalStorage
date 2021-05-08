@@ -1,6 +1,6 @@
 {
   "name": "com.dre0dru.localstorage",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "displayName": "Local Storage",
   "description": "Utility classes for managing local data saved on device",
   "unity": "2020.1",
