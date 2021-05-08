@@ -129,7 +129,7 @@ EncryptedFileProvider encryptedFileProvider = new EncryptedFileProvider(fileProv
 
 IStorage<UnityJsonSerializationProvider, EncryptedFileProvider> encryptedJsonStorage = 
     new Storage<UnityJsonSerializationProvider, EncryptedFileProvider>(
-j   sonSerializationProvider, encryptedFileProvider);
+    jsonSerializationProvider, encryptedFileProvider);
 ```
 # License
 The software released under the terms of the [MIT license](./LICENSE.md).
