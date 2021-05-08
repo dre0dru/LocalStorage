@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "displayName": "Local Storage",
   "description": "Utility classes for managing local data saved on device",
-  "unity": "2020.3",
+  "unity": "2020.1",
   "unityRelease": "0f1",
   "keywords": [
     "Storage"
