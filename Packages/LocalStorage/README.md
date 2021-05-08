@@ -1,3 +1,4 @@
+[![openupm](https://img.shields.io/npm/v/com.dre0dru.localstorage?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.dre0dru.localstorage/)
 # Description
 Configurable generic class for managing local data saved on device.
 Unity 2020.1+
@@ -20,6 +21,10 @@ This package can be installed as unity module directly from git url in two ways:
 - By using `Window/Package Manager/Add package from git URL...` in Unity:
 ```
 https://github.com/dre0dru/LocalStorage.git#upm
+```
+- The package is also available on the [openupm registry](https://openupm.com). You can install it via [openupm-cli](https://github.com/openupm/openupm-cli):
+```
+openupm add com.dre0dru.localstorage
 ```
   
 # Usage
