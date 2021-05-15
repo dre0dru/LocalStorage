@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/dre0dru/LocalStorage/compare/v2.2.0...v2.3.0) (2021-05-15)
+
+
+### Features
+
+* added async methods to `ISerializationProvider`, removed async keyword from `Storage`, returning chained tasks instead ([dce37ff](https://github.com/dre0dru/LocalStorage/commit/dce37ff34a6c9f6170456fb31422764196bc6276))
+
 # [2.2.0](https://github.com/dre0dru/LocalStorage/compare/v2.1.0...v2.2.0) (2021-05-08)
 
 
