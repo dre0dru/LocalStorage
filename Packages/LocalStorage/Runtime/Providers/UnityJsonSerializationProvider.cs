@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -24,10 +25,20 @@ namespace LocalStorage.Providers
             return Encoding.UTF8.GetBytes(json);
         }
 
-        public T Deserialize<T>(byte[] output)
+        public Task<byte[]> SerializeAsync<T>(T data)
         {
-            var json = Encoding.UTF8.GetString(output);
+            return Task.FromResult(Serialize(data));
+        }
+
+        public T Deserialize<T>(byte[] data)
+        {
+            var json = Encoding.UTF8.GetString(data);
             return JsonUtility.FromJson<T>(json);
+        }
+
+        public Task<T> DeserializeAsync<T>(byte[] data)
+        {
+            return Task.FromResult(Deserialize<T>(data));
         }
     }
 }
