@@ -27,8 +27,8 @@ namespace LocalStorage
 
         public Task SaveAsync<TData>(TData data, string fileName)
         {
-            var output = _serializationProvider.Serialize(data);
-            return _fileProvider.WriteAsync(output, GetFilePath(fileName));
+            return _serializationProvider.SerializeAsync(data)
+                .ContinueWith(task => _fileProvider.WriteAsync(task.Result, GetFilePath(fileName)));
         }
 
         public TData Load<TData>(string fileName)
@@ -37,10 +37,10 @@ namespace LocalStorage
             return _serializationProvider.Deserialize<TData>(output);
         }
 
-        public async Task<TData> LoadAsync<TData>(string fileName)
+        public Task<TData> LoadAsync<TData>(string fileName)
         {
-            var output = await _fileProvider.ReadAsync(GetFilePath(fileName));
-            return _serializationProvider.Deserialize<TData>(output);
+            return _fileProvider.ReadAsync(GetFilePath(fileName))
+                .ContinueWith(task => _serializationProvider.Deserialize<TData>(task.Result));
         }
 
         public bool Delete(string fileName)
