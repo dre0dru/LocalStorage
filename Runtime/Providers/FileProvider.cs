@@ -26,41 +26,40 @@ namespace LocalStorage.Providers
             }
         }
 
-        public void Write(byte[] output, string fileName)
-        {
+        public void Write(byte[] output, string fileName) =>
             File.WriteAllBytes(GetFilePath(fileName), output);
-        }
 
-        public async Task WriteAsync(byte[] output, string fileName)
+        public Task WriteAsync(byte[] output, string fileName)
         {
-            using var fileStream =
+            var fileStream =
                 new FileStream(
                     GetFilePath(fileName),
                     FileMode.Create, FileAccess.Write, FileShare.None,
                     4096, true);
 
-            await fileStream.WriteAsync(output, 0, output.Length);
+            return fileStream.WriteAsync(output, 0, output.Length)
+                .ContinueWith(task => fileStream.Dispose());
         }
 
-        public byte[] Read(string fileName)
-        {
-            return File.ReadAllBytes(GetFilePath(fileName));
-        }
+        public byte[] Read(string fileName) =>
+            File.ReadAllBytes(GetFilePath(fileName));
 
-        public async Task<byte[]> ReadAsync(string fileName)
+        public Task<byte[]> ReadAsync(string fileName)
         {
-            using var fileStream =
+            var fileStream =
                 new FileStream(
                     GetFilePath(fileName),
                     FileMode.Open, FileAccess.Read, FileShare.Read,
                     4096, true);
 
-
             var buffer = new byte[fileStream.Length];
             //Assuming data length is < int.MaxValue
-            await fileStream.ReadAsync(buffer, 0, buffer.Length);
-
-            return buffer;
+            return fileStream.ReadAsync(buffer, 0, buffer.Length)
+                .ContinueWith(task =>
+                {
+                    fileStream.Dispose();
+                    return buffer;
+                });
         }
 
         public bool Delete(string fileName)
@@ -74,14 +73,10 @@ namespace LocalStorage.Providers
             return false;
         }
 
-        public string GetFilePath(string fileName)
-        {
-            return Path.Combine(_path, fileName);
-        }
+        public string GetFilePath(string fileName) =>
+            Path.Combine(_path, fileName);
 
-        public bool FileExists(string fileName)
-        {
-            return File.Exists(GetFilePath(fileName));
-        }
+        public bool FileExists(string fileName) =>
+            File.Exists(GetFilePath(fileName));
     }
 }
