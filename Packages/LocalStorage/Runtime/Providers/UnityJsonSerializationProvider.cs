@@ -14,31 +14,19 @@ namespace LocalStorage.Providers
         {
         }
 
-        public UnityJsonSerializationProvider(bool prettyPrint)
-        {
+        public UnityJsonSerializationProvider(bool prettyPrint) =>
             _prettyPrint = prettyPrint;
-        }
 
-        public byte[] Serialize<T>(T data)
-        {
-            var json = JsonUtility.ToJson(data, _prettyPrint);
-            return Encoding.UTF8.GetBytes(json);
-        }
+        public byte[] Serialize<T>(T data) =>
+            Encoding.UTF8.GetBytes(JsonUtility.ToJson(data, _prettyPrint));
 
-        public Task<byte[]> SerializeAsync<T>(T data)
-        {
-            return Task.FromResult(Serialize(data));
-        }
+        public Task<byte[]> SerializeAsync<T>(T data) =>
+            Task.FromResult(Serialize(data));
 
-        public T Deserialize<T>(byte[] data)
-        {
-            var json = Encoding.UTF8.GetString(data);
-            return JsonUtility.FromJson<T>(json);
-        }
+        public T Deserialize<T>(byte[] data) =>
+            JsonUtility.FromJson<T>(Encoding.UTF8.GetString(data));
 
-        public Task<T> DeserializeAsync<T>(byte[] data)
-        {
-            return Task.FromResult(Deserialize<T>(data));
-        }
+        public Task<T> DeserializeAsync<T>(byte[] data) =>
+            Task.FromResult(Deserialize<T>(data));
     }
 }

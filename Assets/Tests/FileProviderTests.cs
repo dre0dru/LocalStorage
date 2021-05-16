@@ -47,7 +47,7 @@ namespace LocalStorage.Tests
             Assert.IsTrue(FileProvider.FileExists(Constants.FileName));
         }
 
-        [TestCaseSource(typeof(Constants), nameof(Constants.FileProviderTestData))]
+        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_Write(byte[] data)
         {
             Assert.IsFalse(Setup.FileExists(Constants.FilePath));
@@ -58,7 +58,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, Setup.ReadFromFile(Constants.FilePath));
         }
 
-        [TestCaseSource(typeof(Constants), nameof(Constants.FileProviderTestData))]
+        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_WriteAsync(byte[] data)
         {
             Assert.IsFalse(Setup.FileExists(Constants.FilePath));
@@ -70,7 +70,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, Setup.ReadFromFile(Constants.FilePath));
         }
 
-        [TestCaseSource(typeof(Constants), nameof(Constants.FileProviderTestData))]
+        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_Read(byte[] data)
         {
             Setup.WriteToFile(Constants.FilePath, data);
@@ -78,7 +78,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, FileProvider.Read(Constants.FileName));
         }
 
-        [TestCaseSource(typeof(Constants), nameof(Constants.FileProviderTestData))]
+        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_ReadAsync(byte[] data)
         {
             Setup.WriteToFile(Constants.FilePath, data);

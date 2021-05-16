@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using LocalStorage.Compression;
 using LocalStorage.Encryption;
 using UnityEngine;
 
@@ -38,11 +39,15 @@ Pellentesque sem ex, pellentesque ac neque quis, vulputate sollicitudin mi. Morb
 
         public static readonly IEncryptionSettings Es = new EncryptionSettings();
 
-        public static IEnumerable<byte[]> FileProviderTestData()
+        public static IEnumerable<byte[]> TestsData()
         {
             yield return new byte[] {1, 2, 3};
             yield return "string".ToBytes();
             yield return TestData.ToBytes();
         }
+
+        public static readonly IDataTransform AesDT = new AesEncryptionDataTransform(Constants.Es);
+        public static readonly IDataTransform DeflateDT = new DeflateDataTransform();
+        public static readonly IDataTransform GZipDT = new GZipDataTransform();
     }
 }

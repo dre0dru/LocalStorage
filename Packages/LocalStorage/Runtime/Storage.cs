@@ -19,23 +19,18 @@ namespace LocalStorage
                             throw new ArgumentNullException(nameof(fileProvider));
         }
 
-        public void Save<TData>(TData data, string fileName)
-        {
-            var output = _serializationProvider.Serialize(data);
-            _fileProvider.Write(output, GetFilePath(fileName));
-        }
+        public void Save<TData>(TData data, string fileName) =>
+            _fileProvider.Write(_serializationProvider.Serialize(data), 
+                GetFilePath(fileName));
 
-        public Task SaveAsync<TData>(TData data, string fileName)
-        {
-            return _serializationProvider.SerializeAsync(data)
-                .ContinueWith(task => _fileProvider.WriteAsync(task.Result, GetFilePath(fileName)));
-        }
+        public Task SaveAsync<TData>(TData data, string fileName) =>
+            _serializationProvider.SerializeAsync(data)
+                .ContinueWith(task => 
+                    _fileProvider.WriteAsync(task.Result, GetFilePath(fileName)));
 
-        public TData Load<TData>(string fileName)
-        {
-            var output = _fileProvider.Read(GetFilePath(fileName));
-            return _serializationProvider.Deserialize<TData>(output);
-        }
+        public TData Load<TData>(string fileName) =>
+            _serializationProvider
+                .Deserialize<TData>(_fileProvider.Read(GetFilePath(fileName)));
 
         public Task<TData> LoadAsync<TData>(string fileName)
         {
@@ -43,20 +38,14 @@ namespace LocalStorage
                 .ContinueWith(task => _serializationProvider.Deserialize<TData>(task.Result));
         }
 
-        public bool Delete(string fileName)
-        {
-            return _fileProvider.Delete(fileName);
-        }
+        public bool Delete(string fileName) =>
+            _fileProvider.Delete(fileName);
 
-        public string GetFilePath(string fileName)
-        {
-            return _fileProvider.GetFilePath(fileName);
-        }
+        public string GetFilePath(string fileName) =>
+            _fileProvider.GetFilePath(fileName);
 
-        public bool FileExists(string fileName)
-        {
-            return _fileProvider.FileExists(fileName);
-        }
+        public bool FileExists(string fileName) =>
+            _fileProvider.FileExists(fileName);
     }
 
     public class Storage<TSerialization, TFile> : Storage, IStorage<TSerialization, TFile>
