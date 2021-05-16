@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -8,6 +9,11 @@ namespace LocalStorage.Compression
     {
         public static byte[] WriteGZip(byte[] data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
             using var dataStream = new MemoryStream();
             using (var compressionStream = new GZipStream(dataStream, CompressionMode.Compress))
             {
@@ -15,10 +21,38 @@ namespace LocalStorage.Compression
             }
 
             return dataStream.ToArray();
+        }
+
+        public static Task<byte[]> WriteGZipAsync(byte[] data)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            var dataStream = new MemoryStream();
+            var compressionStream = new GZipStream(dataStream, CompressionMode.Compress);
+
+            return compressionStream.WriteAsync(data, 0, data.Length)
+                .ContinueWith(task =>
+                {
+                    using (dataStream)
+                    {
+                        //Must manually dispose before returning
+                        //https://github.com/dotnet/runtime/issues/15371
+                        compressionStream.Dispose();
+                        return dataStream.ToArray();
+                    }
+                });
         }
 
         public static byte[] ReadGZip(byte[] data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
             using var dataStream = new MemoryStream(data);
             using var compressionStream = new GZipStream(dataStream, CompressionMode.Decompress);
             using var decompressedStream = new MemoryStream();
@@ -27,29 +61,36 @@ namespace LocalStorage.Compression
             return decompressedStream.ToArray();
         }
 
-        public static async Task<byte[]> WriteGZipAsync(byte[] data)
+        public static Task<byte[]> ReadGZipAsync(byte[] data)
         {
-            using var dataStream = new MemoryStream();
-            using (var compressionStream = new GZipStream(dataStream, CompressionMode.Compress))
+            if (data == null)
             {
-                await compressionStream.WriteAsync(data, 0, data.Length);
+                throw new ArgumentNullException(nameof(data));
             }
 
-            return dataStream.ToArray();
-        }
-        
-        public static async Task<byte[]> ReadGZipAsync(byte[] data)
-        {
-            using var dataStream = new MemoryStream(data);
-            using var compressionStream = new GZipStream(dataStream, CompressionMode.Decompress);
-            using var decompressedStream = new MemoryStream();
-            await compressionStream.CopyToAsync(decompressedStream);
+            var dataStream = new MemoryStream(data);
+            var compressionStream = new GZipStream(dataStream, CompressionMode.Decompress);
+            var decompressedStream = new MemoryStream();
 
-            return decompressedStream.ToArray();
+            return compressionStream.CopyToAsync(decompressedStream)
+                .ContinueWith(task =>
+                {
+                    using (dataStream)
+                    using (compressionStream)
+                    using (decompressedStream)
+                    {
+                        return decompressedStream.ToArray();
+                    }
+                });
         }
-        
+
         public static byte[] WriteDeflate(byte[] data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            
             using var dataStream = new MemoryStream();
             using (var compressionStream = new DeflateStream(dataStream, CompressionMode.Compress))
             {
@@ -59,8 +100,36 @@ namespace LocalStorage.Compression
             return dataStream.ToArray();
         }
 
+        public static Task<byte[]> WriteDeflateAsync(byte[] data)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            var dataStream = new MemoryStream();
+            var compressionStream = new DeflateStream(dataStream, CompressionMode.Compress);
+
+            return compressionStream.WriteAsync(data, 0, data.Length)
+                .ContinueWith(task =>
+                {
+                    using (dataStream)
+                    {
+                        //Must manually dispose before returning
+                        //https://github.com/dotnet/runtime/issues/15371
+                        compressionStream.Dispose();
+                        return dataStream.ToArray();
+                    }
+                });
+        }
+
         public static byte[] ReadDeflate(byte[] data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            
             using var dataStream = new MemoryStream(data);
             using var compressionStream = new DeflateStream(dataStream, CompressionMode.Decompress);
             using var decompressedStream = new MemoryStream();
@@ -69,27 +138,27 @@ namespace LocalStorage.Compression
             return decompressedStream.ToArray();
         }
 
-        public static async Task<byte[]> WriteDeflateAsync(byte[] data)
+        public static Task<byte[]> ReadDeflateAsync(byte[] data)
         {
-            using var dataStream = new MemoryStream();
-            using (var compressionStream = new DeflateStream(dataStream, CompressionMode.Compress))
+            if (data == null)
             {
-                await compressionStream.WriteAsync(data, 0, data.Length);
+                throw new ArgumentNullException(nameof(data));
             }
 
-            return dataStream.ToArray();
-        }
-        
-        public static async Task<byte[]> ReadDeflateAsync(byte[] data)
-        {
-            using var dataStream = new MemoryStream(data);
-            using var compressionStream = new DeflateStream(dataStream, CompressionMode.Decompress);
-            using var decompressedStream = new MemoryStream();
-            await compressionStream.CopyToAsync(decompressedStream);
+            var dataStream = new MemoryStream(data);
+            var compressionStream = new DeflateStream(dataStream, CompressionMode.Decompress);
+            var decompressedStream = new MemoryStream();
 
-            return decompressedStream.ToArray();
+            return compressionStream.CopyToAsync(decompressedStream)
+                .ContinueWith(task =>
+                {
+                    using (dataStream)
+                    using (compressionStream)
+                    using (decompressedStream)
+                    {
+                        return decompressedStream.ToArray();
+                    }
+                });
         }
-        
-        
     }
 }
