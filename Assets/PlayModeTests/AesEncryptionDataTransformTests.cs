@@ -2,14 +2,14 @@ using System;
 using System.Threading.Tasks;
 using LocalStorage.Encryption;
 using NUnit.Framework;
+using static LocalStorage.PlayModeTests.Constants.Instances;
 
 namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class AesEncryptionDataTransformTests
     {
-        private static readonly IDataTransform DataTransform =
-            new AesEncryptionDataTransform(Constants.Es);
+       
 
         [Test]
         public void DataTransform_ThrowsArgumentNullException()
@@ -21,42 +21,42 @@ namespace LocalStorage.PlayModeTests
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void DataTransform_Apply(byte[] data)
         {
-            var result = DataTransform.Apply(data);
+            var result = AesDT.Apply(data);
 
             Assert.AreEqual(data, result.Decrypt());
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void DataTransform_ApplyAsync(byte[] data)
         {
-            var result = Task.Run(async () => await DataTransform.ApplyAsync(data))
+            var result = Task.Run(async () => await AesDT.ApplyAsync(data))
                 .GetAwaiter().GetResult();
 
             Assert.AreEqual(data, result.Decrypt());
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void DataTransform_Reverse(byte[] data)
         {
             var encrypted = data.Encrypt();
 
-            var result = DataTransform.Reverse(encrypted);
+            var result = AesDT.Reverse(encrypted);
 
             Assert.AreEqual(data, result);
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void DataTransform_ReverseAsync(byte[] data)
         {
             var encrypted = data.Encrypt();
 
-            var result = Task.Run(async () => await DataTransform.ReverseAsync(encrypted))
+            var result = Task.Run(async () => await AesDT.ReverseAsync(encrypted))
                 .GetAwaiter().GetResult();
 
             Assert.AreEqual(data, result);

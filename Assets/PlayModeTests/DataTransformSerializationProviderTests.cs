@@ -3,26 +3,26 @@ using System.Numerics;
 using System.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
+using static LocalStorage.PlayModeTests.Constants.Instances;
 
 namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class DataTransformSerializationProviderTests
     {
-        private static readonly ISerializationProvider JsonSP = new UnityJsonSerializationProvider();
 
-        private static object[] SerializationProviders =
+        private static object[] _serializationProviders =
         {
-            new object[] {new DataTransformSerializationProvider(JsonSP, Constants.AesDT)},
-            new object[] {new DataTransformSerializationProvider(JsonSP, Constants.DeflateDT)},
-            new object[] {new DataTransformSerializationProvider(JsonSP, Constants.GZipDT)},
+            new object[] {new DataTransformSerializationProvider(UnityJsonSP, AesDT)},
+            new object[] {new DataTransformSerializationProvider(UnityJsonSP, DeflateDT)},
+            new object[] {new DataTransformSerializationProvider(UnityJsonSP, GZipDT)},
         };
 
         private static object[] _argumentNullExceptionCases =
         {
             new object[] {null, null},
-            new object[] {JsonSP, null},
-            new object[] {null, Constants.AesDT},
+            new object[] {UnityJsonSP, null},
+            new object[] {null, AesDT},
         };
 
         private static Vector2 Data => new Vector2();
@@ -39,7 +39,7 @@ namespace LocalStorage.PlayModeTests
         }
 
         [Test]
-        [TestCaseSource(nameof(SerializationProviders))]
+        [TestCaseSource(nameof(_serializationProviders))]
         public void SerializationProvider_SerializeDeserialize(ISerializationProvider serializationProvider)
         {
             var serialized = serializationProvider.Serialize(Data);
@@ -49,7 +49,7 @@ namespace LocalStorage.PlayModeTests
         }
 
         [Test]
-        [TestCaseSource(nameof(SerializationProviders))]
+        [TestCaseSource(nameof(_serializationProviders))]
         public void SerializationProvider_SerializeDeserializeAsync(ISerializationProvider serializationProvider)
         {
             var serialized = Task.Run(async () => await serializationProvider.SerializeAsync(Data))

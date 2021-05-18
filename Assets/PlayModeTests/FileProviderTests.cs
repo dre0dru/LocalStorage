@@ -1,93 +1,91 @@
 using System.Threading.Tasks;
-using LocalStorage.Providers;
 using NUnit.Framework;
+using static LocalStorage.PlayModeTests.Constants.Instances;
 
 namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class FileProviderTests
     {
-        private static readonly IFileProvider FileProvider = new FileProvider();
-
         [SetUp]
         public virtual void SetUp()
         {
-            Setup.DeleteFile(Constants.FilePath);
+            Setup.DeleteFile(Constants.Data.FilePath);
         }
 
         [TearDown]
         public virtual void TearDown()
         {
-            Setup.DeleteFile(Constants.FilePath);
+            Setup.DeleteFile(Constants.Data.FilePath);
         }
         
         [Test]
         public void FileProvider_Delete()
         {
-            Setup.CreateEmptyFile(Constants.FilePath);
+            Setup.CreateEmptyFile(Constants.Data.FilePath);
 
-            FileProvider.Delete(Constants.FileName);
+            FP.Delete(Constants.Data.FileName);
 
-            Assert.IsFalse(Setup.FileExists(Constants.FilePath));
+            Assert.IsFalse(Setup.FileExists(Constants.Data.FilePath));
         }
 
         [Test]
         public void FileProvider_GetFilePath()
         {
-            Assert.AreEqual(Constants.FilePath, FileProvider.GetFilePath(Constants.FileName));
+            Assert.AreEqual(Constants.Data.FilePath, FP.GetFilePath(Constants.Data.FileName));
         }
 
         [Test]
         public void FileProvider_FileExists()
         {
-            Assert.IsFalse(FileProvider.FileExists(Constants.FileName));
+            Assert.IsFalse(FP.FileExists(Constants.Data.FileName));
             
-            Setup.CreateEmptyFile(Constants.FilePath);
+            Setup.CreateEmptyFile(Constants.Data.FilePath);
             
-            Assert.IsTrue(FileProvider.FileExists(Constants.FileName));
+            Assert.IsTrue(FP.FileExists(Constants.Data.FileName));
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void FileProvider_Write(byte[] data)
         {
-            Assert.IsFalse(Setup.FileExists(Constants.FilePath));
+            Assert.IsFalse(Setup.FileExists(Constants.Data.FilePath));
 
-            FileProvider.Write(data, Constants.FileName);
+            FP.Write(data, Constants.Data.FileName);
 
-            Assert.IsTrue(Setup.FileExists(Constants.FilePath));
-            Assert.AreEqual(data, Setup.ReadFromFile(Constants.FilePath));
+            Assert.IsTrue(Setup.FileExists(Constants.Data.FilePath));
+            Assert.AreEqual(data, Setup.ReadFromFile(Constants.Data.FilePath));
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void FileProvider_WriteAsync(byte[] data)
         {
-            Assert.IsFalse(Setup.FileExists(Constants.FilePath));
+            Assert.IsFalse(Setup.FileExists(Constants.Data.FilePath));
 
-            Task.Run(async () => await FileProvider.WriteAsync(data, Constants.FileName))
+            Task.Run(async () => await FP.WriteAsync(data, Constants.Data.FileName))
                 .GetAwaiter().GetResult();
 
-            Assert.IsTrue(Setup.FileExists(Constants.FilePath));
-            Assert.AreEqual(data, Setup.ReadFromFile(Constants.FilePath));
+            Assert.IsTrue(Setup.FileExists(Constants.Data.FilePath));
+            Assert.AreEqual(data, Setup.ReadFromFile(Constants.Data.FilePath));
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void FileProvider_Read(byte[] data)
         {
-            Setup.WriteToFile(Constants.FilePath, data);
+            Setup.WriteToFile(Constants.Data.FilePath, data);
 
-            Assert.AreEqual(data, FileProvider.Read(Constants.FileName));
+            Assert.AreEqual(data, FP.Read(Constants.Data.FileName));
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
         public void FileProvider_ReadAsync(byte[] data)
         {
-            Setup.WriteToFile(Constants.FilePath, data);
+            Setup.WriteToFile(Constants.Data.FilePath, data);
 
-            var result = Task.Run(async () => await FileProvider.ReadAsync(Constants.FileName))
+            var result = Task.Run(async () => await FP.ReadAsync(Constants.Data.FileName))
                 .GetAwaiter().GetResult();
 
             Assert.AreEqual(data, result);

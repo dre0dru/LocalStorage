@@ -1,64 +1,62 @@
 using System.Threading.Tasks;
-using LocalStorage.Providers;
 using NUnit.Framework;
-using UnityEngine;
+using static LocalStorage.PlayModeTests.Constants.Instances;
 
 namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class UnityJsonSerializationProviderTests
     {
-        private readonly ISerializationProvider _serializationProvider
-            = new UnityJsonSerializationProvider();
-
-        private static Vector2 Data => new Vector2();
-
         [Test]
-        public void SerializationProvider_Serialize()
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestGenericData))]
+        public void SerializationProvider_Serialize<T>(T data)
         {
-            var result = _serializationProvider.Serialize(Data);
+            var result = UnityJsonSP.Serialize(data);
 
-            Assert.AreEqual(Data.ToJson().ToBytes(), result);
+            Assert.AreEqual(data.ToJson().ToBytes(), result);
 
             var resultJson = result.FromBytes();
 
-            Assert.AreEqual(Data.ToJson(), resultJson);
+            Assert.AreEqual(data.ToJson(), resultJson);
         }
 
         [Test]
-        public void SerializationProvider_SerializeAsync()
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestGenericData))]
+        public void SerializationProvider_SerializeAsync<T>(T data)
         {
-            var result = Task.Run(async () => await _serializationProvider.SerializeAsync(Data))
+            var result = Task.Run(async () => await UnityJsonSP.SerializeAsync(data))
                 .GetAwaiter().GetResult();
 
-            Assert.AreEqual(Data.ToJson().ToBytes(), result);
+            Assert.AreEqual(data.ToJson().ToBytes(), result);
 
             var resultJson = result.FromBytes();
 
-            Assert.AreEqual(Data.ToJson(), resultJson);
+            Assert.AreEqual(data.ToJson(), resultJson);
         }
 
         [Test]
-        public void SerializationProvider_Deserialize()
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestGenericData))]
+        public void SerializationProvider_Deserialize<T>(T data)
         {
-            var json = Data.ToJson();
+            var json = data.ToJson();
             var bytes = json.ToBytes();
 
-            var result = _serializationProvider.Deserialize<Vector2>(bytes);
+            var result = UnityJsonSP.Deserialize<T>(bytes);
 
-            Assert.AreEqual(Data, result);
+            Assert.AreEqual(data, result);
         }
 
         [Test]
-        public void SerializationProvider_DeserializeAsync()
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestGenericData))]
+        public void SerializationProvider_DeserializeAsync<T>(T data)
         {
-            var json = Data.ToJson();
+            var json = data.ToJson();
             var bytes = json.ToBytes();
 
-            var result = Task.Run(async () => await _serializationProvider.DeserializeAsync<Vector2>(bytes))
+            var result = Task.Run(async () => await UnityJsonSP.DeserializeAsync<T>(bytes))
                 .GetAwaiter().GetResult();
 
-            Assert.AreEqual(Data, result);
+            Assert.AreEqual(data, result);
         }
     }
 }

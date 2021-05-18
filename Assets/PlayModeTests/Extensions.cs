@@ -24,12 +24,12 @@ namespace LocalStorage.PlayModeTests
 
         public static byte[] Encrypt(this byte[] bytes)
         {
-            return AesEncryption.Encrypt(bytes, Constants.Es.Key, Constants.Es.InitializationVector);
+            return AesEncryption.Encrypt(bytes, Constants.Instances.Es.Key, Constants.Instances.Es.InitializationVector);
         }
         
         public static byte[] Decrypt(this byte[] bytes)
         {
-            return AesEncryption.Decrypt(bytes, Constants.Es.Key, Constants.Es.InitializationVector);
+            return AesEncryption.Decrypt(bytes, Constants.Instances.Es.Key, Constants.Instances.Es.InitializationVector);
         }
 
         public static byte[] WriteGZip(this byte[] bytes)
