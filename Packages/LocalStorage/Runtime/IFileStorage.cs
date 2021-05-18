@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace LocalStorage
 {
-    public interface IStorage
+    public interface IFileStorage
     {
         void Save<TData>(TData data, string fileName);
 
@@ -19,7 +19,7 @@ namespace LocalStorage
         bool FileExists(string fileName);
     }
 
-    public interface IStorage<TSerialization, TFile> : IStorage
+    public interface IFileStorage<TSerialization, TFile> : IFileStorage
         where TSerialization : ISerializationProvider where TFile : IFileProvider
     {
         
