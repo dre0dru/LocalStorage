@@ -4,13 +4,13 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class Storage : IStorage
+    public class FileStorage : IFileStorage
     {
         private readonly ISerializationProvider _serializationProvider;
         private readonly IFileProvider _fileProvider;
 
         [RequiredMember]
-        public Storage(ISerializationProvider serializationProvider,
+        public FileStorage(ISerializationProvider serializationProvider,
             IFileProvider fileProvider)
         {
             _serializationProvider = serializationProvider ??
@@ -48,11 +48,11 @@ namespace LocalStorage
             _fileProvider.FileExists(fileName);
     }
 
-    public class Storage<TSerialization, TFile> : Storage, IStorage<TSerialization, TFile>
+    public class FileStorage<TSerialization, TFile> : FileStorage, IFileStorage<TSerialization, TFile>
         where TSerialization : ISerializationProvider where TFile : IFileProvider
     {
         [RequiredMember]
-        public Storage(TSerialization serializationProvider, TFile fileProvider) : base(
+        public FileStorage(TSerialization serializationProvider, TFile fileProvider) : base(
             serializationProvider, fileProvider)
         {
         }
