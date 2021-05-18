@@ -1,10 +1,9 @@
-using System.IO.Compression;
 using System.Text;
 using LocalStorage.Compression;
 using LocalStorage.Encryption;
 using UnityEngine;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     public static class Extensions
     {

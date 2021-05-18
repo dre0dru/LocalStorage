@@ -1,21 +1,21 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class CombinedDataTransformTests
     {
-        private static IEnumerable<IDataTransform> DataTransforms()
+        private static object[] DataTransforms =
         {
-            yield return new CombinedDataTransform(Constants.AesDT, Constants.DeflateDT);
-            yield return new CombinedDataTransform(Constants.DeflateDT, Constants.AesDT);
-            yield return new CombinedDataTransform(Constants.AesDT, Constants.GZipDT);
-            yield return new CombinedDataTransform(Constants.GZipDT, Constants.AesDT);
-        }
+            new object[] {new CombinedDataTransform(Constants.AesDT, Constants.DeflateDT)},
+            new object[] {new CombinedDataTransform(Constants.DeflateDT, Constants.AesDT)},
+            new object[] {new CombinedDataTransform(Constants.AesDT, Constants.GZipDT)},
+            new object[] {new CombinedDataTransform(Constants.GZipDT, Constants.AesDT)},
+        };
 
+        [Test]
         [TestCaseSource(nameof(DataTransforms))]
         public void DataTransform_ApplyReverse(IDataTransform dataTransform)
         {
@@ -26,6 +26,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, result);
         }
 
+        [Test]
         [TestCaseSource(nameof(DataTransforms))]
         public void DataTransform_ApplyReverseAsync(IDataTransform dataTransform)
         {

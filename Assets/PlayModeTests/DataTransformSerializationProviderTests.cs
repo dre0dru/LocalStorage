@@ -1,38 +1,35 @@
 using System;
-using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
-using LocalStorage.Compression;
-using LocalStorage.Encryption;
 using LocalStorage.Providers;
-using NSubstitute;
 using NUnit.Framework;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class DataTransformSerializationProviderTests
     {
         private static readonly ISerializationProvider JsonSP = new UnityJsonSerializationProvider();
 
-        private static IEnumerable<ISerializationProvider> SerializationProviders()
+        private static object[] SerializationProviders =
         {
-            yield return new DataTransformSerializationProvider(JsonSP, Constants.AesDT);
-            yield return new DataTransformSerializationProvider(JsonSP, Constants.DeflateDT);
-            yield return new DataTransformSerializationProvider(JsonSP, Constants.GZipDT);
-        }
-        
-        private static IEnumerable<object[]> _argumentNullExceptionCases()
+            new object[] {new DataTransformSerializationProvider(JsonSP, Constants.AesDT)},
+            new object[] {new DataTransformSerializationProvider(JsonSP, Constants.DeflateDT)},
+            new object[] {new DataTransformSerializationProvider(JsonSP, Constants.GZipDT)},
+        };
+
+        private static object[] _argumentNullExceptionCases =
         {
-            yield return new object[] {null, null};
-            yield return new object[] {Substitute.For<ISerializationProvider>(), null};
-            yield return new object[] {null, Substitute.For<IDataTransform>()};
-        }
-        
+            new object[] {null, null},
+            new object[] {JsonSP, null},
+            new object[] {null, Constants.AesDT},
+        };
+
         private static Vector2 Data => new Vector2();
 
+        [Test]
         [TestCaseSource(nameof(_argumentNullExceptionCases))]
-        public void SerializationProvider_ThrowsArgumentNullException(ISerializationProvider serializationProvider, 
+        public void SerializationProvider_ThrowsArgumentNullException(ISerializationProvider serializationProvider,
             IDataTransform dataTransform)
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -40,7 +37,8 @@ namespace LocalStorage.Tests
                 var result = new DataTransformSerializationProvider(serializationProvider, dataTransform);
             });
         }
-        
+
+        [Test]
         [TestCaseSource(nameof(SerializationProviders))]
         public void SerializationProvider_SerializeDeserialize(ISerializationProvider serializationProvider)
         {
@@ -49,7 +47,8 @@ namespace LocalStorage.Tests
 
             Assert.AreEqual(Data, deserialized);
         }
-        
+
+        [Test]
         [TestCaseSource(nameof(SerializationProviders))]
         public void SerializationProvider_SerializeDeserializeAsync(ISerializationProvider serializationProvider)
         {
@@ -60,6 +59,5 @@ namespace LocalStorage.Tests
 
             Assert.AreEqual(Data, deserialized);
         }
-
     }
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using LocalStorage.Encryption;
 using NUnit.Framework;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class AesEncryptionDataTransformTests
@@ -20,6 +20,7 @@ namespace LocalStorage.Tests
             });
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void DataTransform_Apply(byte[] data)
         {
@@ -28,6 +29,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, result.Decrypt());
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void DataTransform_ApplyAsync(byte[] data)
         {
@@ -37,6 +39,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, result.Decrypt());
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void DataTransform_Reverse(byte[] data)
         {
@@ -47,6 +50,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, result);
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void DataTransform_ReverseAsync(byte[] data)
         {

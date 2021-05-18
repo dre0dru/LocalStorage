@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using LocalStorage.Compression;
 using LocalStorage.Encryption;
 using UnityEngine;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     public static class Constants
     {
@@ -39,14 +38,14 @@ Pellentesque sem ex, pellentesque ac neque quis, vulputate sollicitudin mi. Morb
 
         public static readonly IEncryptionSettings Es = new EncryptionSettings();
 
-        public static IEnumerable<byte[]> TestsData()
+        public static object[] TestsData =
         {
-            yield return new byte[] {1, 2, 3};
-            yield return "string".ToBytes();
-            yield return TestData.ToBytes();
-        }
+            new object[] {new byte[] {1, 2, 3}},
+            new object[] {"string".ToBytes()},
+            new object[] {TestData.ToBytes()}
+        };
 
-        public static readonly IDataTransform AesDT = new AesEncryptionDataTransform(Constants.Es);
+        public static readonly IDataTransform AesDT = new AesEncryptionDataTransform(Es);
         public static readonly IDataTransform DeflateDT = new DeflateDataTransform();
         public static readonly IDataTransform GZipDT = new GZipDataTransform();
     }

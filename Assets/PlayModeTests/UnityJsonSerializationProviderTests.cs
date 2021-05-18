@@ -3,7 +3,7 @@ using LocalStorage.Providers;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class UnityJsonSerializationProviderTests

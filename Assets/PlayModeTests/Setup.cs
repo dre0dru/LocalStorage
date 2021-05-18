@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     public static class Setup
     {

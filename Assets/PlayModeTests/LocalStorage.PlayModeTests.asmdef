@@ -1,24 +1,19 @@
 {
-    "name": "LocalStorage.Tests",
+    "name": "LocalStorage.PlayModeTests",
     "rootNamespace": "LocalStorage",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "LocalStorage",
-        "LocalStorage.Encryption",
-        "LocalStorage.Compression"
+        "LocalStorage.Compression",
+        "LocalStorage.Encryption"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll",
-        "Castle.Core.dll",
-        "NSubstitute.dll",
-        "System.Threading.Tasks.Extensions.dll"
+        "nunit.framework.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class FileProviderTests
@@ -47,6 +47,7 @@ namespace LocalStorage.Tests
             Assert.IsTrue(FileProvider.FileExists(Constants.FileName));
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_Write(byte[] data)
         {
@@ -58,6 +59,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, Setup.ReadFromFile(Constants.FilePath));
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_WriteAsync(byte[] data)
         {
@@ -70,6 +72,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, Setup.ReadFromFile(Constants.FilePath));
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_Read(byte[] data)
         {
@@ -78,6 +81,7 @@ namespace LocalStorage.Tests
             Assert.AreEqual(data, FileProvider.Read(Constants.FileName));
         }
 
+        [Test]
         [TestCaseSource(typeof(Constants), nameof(Constants.TestsData))]
         public void FileProvider_ReadAsync(byte[] data)
         {

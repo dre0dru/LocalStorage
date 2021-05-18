@@ -1,23 +1,17 @@
 using System;
-using NSubstitute;
+using LocalStorage.Providers;
 using NUnit.Framework;
 
-namespace LocalStorage.Tests
+namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class StorageTests
     {
-        private static ISerializationProvider SerializationProvider
-        {
-            get
-            {
-                var sub = Substitute.For<ISerializationProvider>();
-                return sub;
-            }
-        }
+        private static ISerializationProvider SerializationProvider =>
+            new UnityJsonSerializationProvider();
 
-        private static IFileProvider FileProvider
-            => Substitute.For<IFileProvider>();
+        private static IFileProvider FileProvider =>
+            new FileProvider();
 
         private static object[] _argumentNullExceptionCases =
         {
@@ -26,6 +20,7 @@ namespace LocalStorage.Tests
             new object[] {null, FileProvider},
         };
 
+        [Test]
         [TestCaseSource(nameof(_argumentNullExceptionCases))]
         public void Storage_ThrowsArgumentNullException(
             ISerializationProvider serializationProvider, IFileProvider fileProvider)

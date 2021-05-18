@@ -28,8 +28,8 @@ MonoBehaviour:
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
+    - com.cysharp.runtimeunittesttoolkit
     - com.openupm
-    - net.tnrd.nsubstitute
     m_IsDefault: 0
     m_Capabilities: 0
   m_UserSelectedRegistryName: 
@@ -41,14 +41,14 @@ MonoBehaviour:
       m_Name: package.openupm.com
       m_Url: https://package.openupm.com
       m_Scopes:
+      - com.cysharp.runtimeunittesttoolkit
       - com.openupm
-      - net.tnrd.nsubstitute
       m_IsDefault: 0
       m_Capabilities: 0
     m_Modified: 0
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
+    - com.cysharp.runtimeunittesttoolkit
     - com.openupm
-    - net.tnrd.nsubstitute
     m_SelectedScopeIndex: 0
