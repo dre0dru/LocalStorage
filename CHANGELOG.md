@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/dre0dru/LocalStorage/compare/v2.4.0...v3.0.0) (2021-05-19)
+
+
+### Features
+
+* misspelled footer in commits, need to bump version ([53bece0](https://github.com/dre0dru/LocalStorage/commit/53bece0575dfe033bb9c844d3793afcebd230836))
+
+
+### BREAKING CHANGES
+
+* bump package version
+
 # [2.4.0](https://github.com/dre0dru/LocalStorage/compare/v2.3.0...v2.4.0) (2021-05-19)
 
 
