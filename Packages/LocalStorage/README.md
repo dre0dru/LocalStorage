@@ -4,7 +4,7 @@ Configurable generic class for managing local data saved on device.
 Unity 2020.1+
 
 ## Features
-- Two generic classes for with configuration options for data read/write and serialization/deserialization via file system or player prefs.
+- Two generic classes with configuration options for data read/write and serialization/deserialization via file system or player prefs.
 - Simple file provider that just reads/writes data.
 - Data transformations that allow to preprocess data on read/write:
   - `IDataTransform` that uses `AES` encryption to encrypt/decrypt data.
@@ -87,6 +87,7 @@ Vector2 deserialized = storage.GetData<Vector2>(dataKey);
 Vector2 deserialized = await storage.GetDataAsync<Vector2>(dataKey);
 ```
 The rest of `IPlayerPrefsStorage` API mimics [Unity](https://docs.unity3d.com/ScriptReference/PlayerPrefs.html) `PlayerPrefs` API.
+
 **Warning!** `PlayerPrefsStorage` is not thread safe.
 ## Data transformation usage
 `IDataTransform` implementations can be used to preprocess data during serialization/deserialization process.
