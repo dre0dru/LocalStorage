@@ -19,8 +19,8 @@ namespace LocalStorage
         bool FileExists(string fileName);
     }
 
-    public interface IFileStorage<TSerialization, TFile> : IFileStorage
-        where TSerialization : ISerializationProvider where TFile : IFileProvider
+    public interface IFileStorage<TSerialization> : IFileStorage
+        where TSerialization : ISerializationProvider
     {
         
     }

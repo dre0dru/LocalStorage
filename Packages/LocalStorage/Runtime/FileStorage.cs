@@ -48,11 +48,11 @@ namespace LocalStorage
             _fileProvider.FileExists(fileName);
     }
 
-    public class FileStorage<TSerialization, TFile> : FileStorage, IFileStorage<TSerialization, TFile>
-        where TSerialization : ISerializationProvider where TFile : IFileProvider
+    public class FileStorage<TSerialization> : FileStorage, IFileStorage<TSerialization>
+        where TSerialization : ISerializationProvider
     {
         [RequiredMember]
-        public FileStorage(TSerialization serializationProvider, TFile fileProvider) : base(
+        public FileStorage(TSerialization serializationProvider, IFileProvider fileProvider) : base(
             serializationProvider, fileProvider)
         {
         }
