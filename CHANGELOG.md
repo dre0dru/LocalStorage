@@ -1,3 +1,14 @@
+# [2.4.0](https://github.com/dre0dru/LocalStorage/compare/v2.3.0...v2.4.0) (2021-05-19)
+
+
+### Features
+
+* added `IPlayerPrefsStorage` and its implementation ([310d9e9](https://github.com/dre0dru/LocalStorage/commit/310d9e99dd5f6032764b6b89958386eac555dfa4))
+* added new `async` APIs for encryption and compression, removed `async` keyword and replaced with task chaining ([549e7b7](https://github.com/dre0dru/LocalStorage/commit/549e7b77ee6360a5853fab1075d87e3ae221c4b7))
+* changed `IFileStorage` generic interface declaration to use only `ISerializationProvider` as generic constraint ([683e57f](https://github.com/dre0dru/LocalStorage/commit/683e57fe0bb42c2701d1a1e83b3148f5c0f58300))
+* introduced `IDataTransform` and `DataTransformSerializationProvider` ([145b6f4](https://github.com/dre0dru/LocalStorage/commit/145b6f4b73da206d4d530479e2c236a1d327f7c4))
+* preparing for adding player prefs storage ([aa1750c](https://github.com/dre0dru/LocalStorage/commit/aa1750c427dd0a9b87eb20a7d48d40e0aa05d229))
+
 # [2.3.0](https://github.com/dre0dru/LocalStorage/compare/v2.2.0...v2.3.0) (2021-05-15)
 
 
