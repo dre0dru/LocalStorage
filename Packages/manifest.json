@@ -35,7 +35,8 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.cysharp.unitask": "2.2.5"
   },
   "scopedRegistries": [
     {
@@ -43,6 +44,7 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.cysharp.runtimeunittesttoolkit",
+        "com.cysharp.unitask",
         "com.openupm"
       ]
     }

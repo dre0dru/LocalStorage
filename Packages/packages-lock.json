@@ -7,6 +7,13 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.cysharp.unitask": {
+      "version": "2.2.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.dre0dru.localstorage": {
       "version": "file:LocalStorage",
       "depth": 0,

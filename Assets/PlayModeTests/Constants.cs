@@ -39,6 +39,7 @@ namespace LocalStorage.PlayModeTests
         public static class Data
         {
             public const string FileName = "file.test";
+            public const string DataKey = "key";
 
             public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
 
@@ -74,6 +75,13 @@ Pellentesque sem ex, pellentesque ac neque quis, vulputate sollicitudin mi. Morb
                         Float = 33.33f
                     }
                 },
+            };
+
+            public static readonly Vector2 GenericDataVector = new Vector2(10, 20);
+            public static readonly TestSerializableStruct GenericDataStruct = new TestSerializableStruct()
+            {
+                String = "String",
+                Float = 33.33f
             };
         }
     }

@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "LocalStorage",
         "LocalStorage.Compression",
-        "LocalStorage.Encryption"
+        "LocalStorage.Encryption",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

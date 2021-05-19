@@ -31,7 +31,7 @@ namespace LocalStorage
 
         public Task SetDataAsync<T>(string key, T data) =>
             _serializationProvider.SerializeAsync(data)
-                .ContinueWith(task => SetBytes(key, task.Result));
+                .ContinueWith(task => SetBytes(key, task.Result), TaskScheduler.FromCurrentSynchronizationContext());
 
         public Task<T> GetDataAsync<T>(string key) =>
             _serializationProvider.DeserializeAsync<T>(GetBytes(key));

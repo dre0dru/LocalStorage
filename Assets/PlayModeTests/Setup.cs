@@ -1,4 +1,5 @@
 using System.IO;
+using UnityEngine;
 
 namespace LocalStorage.PlayModeTests
 {
@@ -27,6 +28,18 @@ namespace LocalStorage.PlayModeTests
         public static void WriteToFile(string filePath, byte[] data)
         {
             File.WriteAllBytes(filePath, data);
+        }
+
+        public static void ClearPlayerPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
+
+        public static void PlayerPrefsCreateKey(string key)
+        {
+            PlayerPrefs.SetString(key, "string");
+            PlayerPrefs.Save();
         }
     }
 }
