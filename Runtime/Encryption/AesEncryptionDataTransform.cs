@@ -1,5 +1,9 @@
 using System;
+#if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine.Scripting;
 
 namespace LocalStorage.Encryption
@@ -21,11 +25,19 @@ namespace LocalStorage.Encryption
                 _encryptionSettings.InitializationVector);
         }
 
+        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+        public UniTask<byte[]> ApplyAsync(byte[] data)
+        {
+            return AesEncryption.EncryptAsync(data, _encryptionSettings.Key,
+                _encryptionSettings.InitializationVector).AsUniTask();
+        }
+        #else
         public Task<byte[]> ApplyAsync(byte[] data)
         {
             return AesEncryption.EncryptAsync(data, _encryptionSettings.Key,
                 _encryptionSettings.InitializationVector);
         }
+        #endif
 
         public byte[] Reverse(byte[] data)
         {
@@ -33,10 +45,18 @@ namespace LocalStorage.Encryption
                 _encryptionSettings.InitializationVector);
         }
 
+        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+        public UniTask<byte[]> ReverseAsync(byte[] data)
+        {
+            return AesEncryption.DecryptAsync(data, _encryptionSettings.Key,
+                _encryptionSettings.InitializationVector).AsUniTask();
+        }
+        #else
         public Task<byte[]> ReverseAsync(byte[] data)
         {
             return AesEncryption.DecryptAsync(data, _encryptionSettings.Key,
                 _encryptionSettings.InitializationVector);
         }
+        #endif
     }
 }

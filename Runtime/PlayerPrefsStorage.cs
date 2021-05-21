@@ -1,5 +1,9 @@
 using System;
+#if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -29,12 +33,23 @@ namespace LocalStorage
         public T GetData<T>(string key) =>
             _serializationProvider.Deserialize<T>(GetBytes(key));
 
+        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+        public UniTask SetDataAsync<T>(string key, T data) =>
+            _serializationProvider.SerializeAsync(data)
+                .ContinueWith(bytes => SetBytes(key, bytes));
+        #else
         public Task SetDataAsync<T>(string key, T data) =>
             _serializationProvider.SerializeAsync(data)
                 .ContinueWith(task => SetBytes(key, task.Result), TaskScheduler.FromCurrentSynchronizationContext());
+        #endif
 
+        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+        public UniTask<T> GetDataAsync<T>(string key) =>
+            _serializationProvider.DeserializeAsync<T>(GetBytes(key));
+        #else
         public Task<T> GetDataAsync<T>(string key) =>
             _serializationProvider.DeserializeAsync<T>(GetBytes(key));
+        #endif
 
         public void SetFloat(string key, float value)
         {
