@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/dre0dru/LocalStorage/compare/v3.0.0...v3.1.0) (2021-05-21)
+
+
+### Features
+
+* added optional `UniTask` support for async API ([bd3ed83](https://github.com/dre0dru/LocalStorage/commit/bd3ed83dbc2b4846fd30203d83cf46b76e3b8ded))
+
 # [3.0.0](https://github.com/dre0dru/LocalStorage/compare/v2.4.0...v3.0.0) (2021-05-19)
 
 
