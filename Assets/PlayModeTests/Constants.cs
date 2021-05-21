@@ -50,12 +50,12 @@ Phasellus non sem sapien. Class aptent taciti sociosqu ad litora torquent per co
 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus pellentesque convallis commodo. Vestibulum eleifend mauris id efficitur pulvinar. Vestibulum hendrerit auctor nisi quis luctus. Aenean consequat justo ut quam tincidunt, non tempus nunc efficitur. Nulla pulvinar aliquam mi quis varius. Vestibulum nec purus et nunc tempus sagittis id vitae risus. In pulvinar ligula et scelerisque vehicula.
 Pellentesque sem ex, pellentesque ac neque quis, vulputate sollicitudin mi. Morbi a urna sed nisl pretium lobortis a ac ex. Aenean vel lectus eget dolor auctor tempus. Sed quis aliquam ligula, et aliquet dui. Curabitur sodales convallis sem, eu aliquet quam sodales a. Praesent feugiat nec ligula ultricies vestibulum. Nam tristique vel metus ut pulvinar. Cras commodo ipsum dui, condimentum gravida felis sollicitudin id. Phasellus fringilla ligula lorem, vel viverra sapien posuere sit amet.";
 
-            public static readonly object[] TestByteData =
+            public static readonly object[] TestsByteData =
             {
-                new object[] {new byte[] {1, 2, 3}},
-                new object[] {"string".ToBytes()},
-                new object[] {LoremIpsum.ToBytes()}
+                new object[] {TestByteData}
             };
+
+            public static byte[] TestByteData => LoremIpsum.ToBytes();
 
             [Serializable]
             public struct TestSerializableStruct
@@ -78,6 +78,7 @@ Pellentesque sem ex, pellentesque ac neque quis, vulputate sollicitudin mi. Morb
             };
 
             public static readonly Vector2 GenericDataVector = new Vector2(10, 20);
+
             public static readonly TestSerializableStruct GenericDataStruct = new TestSerializableStruct()
             {
                 String = "String",
