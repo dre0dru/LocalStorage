@@ -1,16 +1,17 @@
 using System;
-using System.Threading.Tasks;
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using LocalStorage.Encryption;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using static LocalStorage.PlayModeTests.Constants.Instances;
+using static LocalStorage.PlayModeTests.Constants.Data;
 
 namespace LocalStorage.PlayModeTests
 {
     [TestFixture]
     public class AesEncryptionDataTransformTests
     {
-       
-
         [Test]
         public void DataTransform_ThrowsArgumentNullException()
         {
@@ -21,7 +22,7 @@ namespace LocalStorage.PlayModeTests
         }
 
         [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestsByteData))]
         public void DataTransform_Apply(byte[] data)
         {
             var result = AesDT.Apply(data);
@@ -29,18 +30,17 @@ namespace LocalStorage.PlayModeTests
             Assert.AreEqual(data, result.Decrypt());
         }
 
-        [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
-        public void DataTransform_ApplyAsync(byte[] data)
-        {
-            var result = Task.Run(async () => await AesDT.ApplyAsync(data))
-                .GetAwaiter().GetResult();
+        [UnityTest]
+        public IEnumerator DataTransform_ApplyAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var result = await AesDT.ApplyAsync(TestByteData);
 
-            Assert.AreEqual(data, result.Decrypt());
-        }
+                Assert.AreEqual(TestByteData, result.Decrypt());
+            });
 
         [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestsByteData))]
         public void DataTransform_Reverse(byte[] data)
         {
             var encrypted = data.Encrypt();
@@ -50,16 +50,15 @@ namespace LocalStorage.PlayModeTests
             Assert.AreEqual(data, result);
         }
 
-        [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
-        public void DataTransform_ReverseAsync(byte[] data)
-        {
-            var encrypted = data.Encrypt();
+        [UnityTest]
+        public IEnumerator DataTransform_ReverseAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var encrypted = TestByteData.Encrypt();
 
-            var result = Task.Run(async () => await AesDT.ReverseAsync(encrypted))
-                .GetAwaiter().GetResult();
+                var result = await AesDT.ReverseAsync(encrypted);
 
-            Assert.AreEqual(data, result);
-        }
+                Assert.AreEqual(TestByteData, result);
+            });
     }
 }

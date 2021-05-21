@@ -14,6 +14,7 @@ Unity 2020.1+
 - Player prefs storage saves data to `PlayerPrefs`. Data location depends on device, refer to [Unity](https://docs.unity3d.com/ScriptReference/PlayerPrefs.html) documentation.
 - Easy to use and understand abstractions that allow to create custom serialization/deserialization and data transformation processes.  
 - Async/sync API.
+- Optional [UniTask](https://github.com/Cysharp/UniTask) support for async API.
 # Installation
 This package can be installed as unity module directly from git url in two ways:
 - By adding following line in `Packages/manifest.json`:
@@ -28,7 +29,10 @@ https://github.com/dre0dru/LocalStorage.git#upm
 ```
 openupm add com.dre0dru.localstorage
 ```
-  
+## Optional UniTask support
+[UniTask](https://github.com/Cysharp/UniTask) package can be installed to convert async API from using `Task` to `UniTask`. No further actions are required after installation.
+
+`UniTask` support can be disabled by using `DISABLE_UNITASK_SUPPORT` define.
 # Usage
 ## FileStorage usage
 ```c#

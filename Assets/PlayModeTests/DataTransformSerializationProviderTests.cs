@@ -1,9 +1,12 @@
 using System;
-using System.Numerics;
-using System.Threading.Tasks;
+using System.Collections;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using static LocalStorage.PlayModeTests.Constants.Instances;
+using static LocalStorage.PlayModeTests.Constants.Data;
 
 namespace LocalStorage.PlayModeTests
 {
@@ -25,8 +28,6 @@ namespace LocalStorage.PlayModeTests
             new object[] {null, AesDT},
         };
 
-        private static Vector2 Data => new Vector2();
-
         [Test]
         [TestCaseSource(nameof(_argumentNullExceptionCases))]
         public void SerializationProvider_ThrowsArgumentNullException(ISerializationProvider serializationProvider,
@@ -42,22 +43,37 @@ namespace LocalStorage.PlayModeTests
         [TestCaseSource(nameof(_serializationProviders))]
         public void SerializationProvider_SerializeDeserialize(ISerializationProvider serializationProvider)
         {
-            var serialized = serializationProvider.Serialize(Data);
-            var deserialized = serializationProvider.Deserialize<Vector2>(serialized);
+            void Test<T>(T data)
+            {
+                var serialized = serializationProvider.Serialize(data);
+                var deserialized = serializationProvider.Deserialize<T>(serialized);
 
-            Assert.AreEqual(Data, deserialized);
+                Assert.AreEqual(data, deserialized);
+            }
+            
+            Test(GenericDataVector);
+            Test(GenericDataStruct);
         }
 
-        [Test]
-        [TestCaseSource(nameof(_serializationProviders))]
-        public void SerializationProvider_SerializeDeserializeAsync(ISerializationProvider serializationProvider)
-        {
-            var serialized = Task.Run(async () => await serializationProvider.SerializeAsync(Data))
-                .GetAwaiter().GetResult();
-            var deserialized = Task.Run(async () => await serializationProvider.DeserializeAsync<Vector2>(serialized))
-                .GetAwaiter().GetResult();
+        [UnityTest]
+        public IEnumerator SerializationProvider_SerializeDeserializeAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                async UniTask Test<T>(T data, ISerializationProvider serializationProvider)
+                {
+                    var serialized =await serializationProvider.SerializeAsync(data);
+                    var deserialized = await serializationProvider.DeserializeAsync<T>(serialized);
 
-            Assert.AreEqual(Data, deserialized);
-        }
+                    Assert.AreEqual(data, deserialized);
+                }
+
+                foreach (var serializationProvider in _serializationProviders
+                    .Select(o => (object[]) o)
+                    .Select(objects => (ISerializationProvider) objects[0]))
+                {
+                    await Test(GenericDataVector, serializationProvider);
+                    await Test(GenericDataStruct, serializationProvider);
+                }
+            });
     }
 }

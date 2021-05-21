@@ -1,7 +1,10 @@
 using System;
-using System.Threading.Tasks;
+using System.Collections;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using static LocalStorage.PlayModeTests.Constants.Instances;
 using static LocalStorage.PlayModeTests.Constants.Data;
 
@@ -19,12 +22,12 @@ namespace LocalStorage.PlayModeTests
 
         private static readonly object[] StorageInstances =
         {
-            new object[] { new FileStorage(UnityJsonSP, FP)},
-            new object[] { new FileStorage(new DataTransformSerializationProvider(UnityJsonSP, AesDT), FP)},
-            new object[] { new FileStorage(new DataTransformSerializationProvider(UnityJsonSP, DeflateDT), FP)},
-            new object[] { new FileStorage(new DataTransformSerializationProvider(UnityJsonSP, GZipDT), FP)},
+            new object[] {new FileStorage(UnityJsonSP, FP)},
+            new object[] {new FileStorage(new DataTransformSerializationProvider(UnityJsonSP, AesDT), FP)},
+            new object[] {new FileStorage(new DataTransformSerializationProvider(UnityJsonSP, DeflateDT), FP)},
+            new object[] {new FileStorage(new DataTransformSerializationProvider(UnityJsonSP, GZipDT), FP)},
         };
-        
+
         [Test]
         [TestCaseSource(nameof(ArgumentNullExceptionCases))]
         public void Storage_ThrowsArgumentNullException(
@@ -45,49 +48,52 @@ namespace LocalStorage.PlayModeTests
             void Test<T>(T data)
             {
                 Setup.DeleteFile(FilePath);
-                
+
                 Assert.IsFalse(Setup.FileExists(FilePath));
-                
+
                 storage.Save(data, FileName);
-                
+
                 Assert.IsTrue(Setup.FileExists(FilePath));
 
                 Assert.AreEqual(data, storage.Load<T>(FileName));
             }
-            
+
             Test(GenericDataVector);
             Test(GenericDataStruct);
-            
+
             Setup.DeleteFile(FilePath);
         }
-        
-        [Test]
-        [TestCaseSource(nameof(StorageInstances))]
-        public void Storage_SaveLoadAsync(IFileStorage storage)
-        {
-            //Can't use [TestCase] or [TestCaseSource]
-            //because of IL2CPP AOT compilation
-            void Test<T>(T data)
+
+        [UnityTest]
+        public IEnumerator Storage_SaveLoadAsync()
+            => UniTask.ToCoroutine(async () =>
             {
-                Setup.DeleteFile(FilePath);
-                
-                Assert.IsFalse(Setup.FileExists(FilePath));
+                //Can't use [TestCase] or [TestCaseSource]
+                //because of IL2CPP AOT compilation
+                async UniTask Test<T>(T data, IFileStorage storage)
+                {
+                    Setup.DeleteFile(FilePath);
 
-                Task.Run(async () => await storage.SaveAsync(data, FileName))
-                    .GetAwaiter().GetResult();
-                
-                Assert.IsTrue(Setup.FileExists(FilePath));
+                    Assert.IsFalse(Setup.FileExists(FilePath));
 
-                var result =  Task.Run(async () => await storage.LoadAsync<T>(FileName))
-                    .GetAwaiter().GetResult();
+                    await storage.SaveAsync(data, FileName);
 
-                Assert.AreEqual(data, result);
-            }
-            
-            Test(GenericDataVector);
-            Test(GenericDataStruct);
-            
-            Setup.DeleteFile(FilePath);
-        }
+                    Assert.IsTrue(Setup.FileExists(FilePath));
+
+                    var result = await storage.LoadAsync<T>(FileName);
+
+                    Assert.AreEqual(data, result);
+
+                    Setup.DeleteFile(FilePath);
+                }
+
+                foreach (var storage in StorageInstances
+                    .Select(o => (object[]) o)
+                    .Select(objects => (IFileStorage) objects[0]))
+                {
+                    await Test(GenericDataVector, storage);
+                    await Test(GenericDataStruct, storage);
+                }
+            });
     }
 }

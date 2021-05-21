@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine.TestTools;
@@ -44,18 +43,19 @@ namespace LocalStorage.PlayModeTests
             void Test<T>(T data)
             {
                 Setup.ClearPlayerPrefs();
+                
                 Assert.IsFalse(Storage.HasKey(DataKey));
 
                 Storage.SetData(DataKey, data);
 
                 Assert.IsTrue(Storage.HasKey(DataKey));
                 Assert.AreEqual(data, Storage.GetData<T>(DataKey));
+                
+                Setup.ClearPlayerPrefs();
             }
 
             Test(GenericDataVector);
             Test(GenericDataStruct);
-
-            Setup.ClearPlayerPrefs();
         }
 
         [UnityTest]
@@ -63,9 +63,10 @@ namespace LocalStorage.PlayModeTests
             UniTask.ToCoroutine(async () =>
             {
                 //Can't use [ValueSource]
-                async Task Test<T>(T data)
+                async UniTask Test<T>(T data)
                 {
                     Setup.ClearPlayerPrefs();
+                    
                     Assert.IsFalse(Storage.HasKey(DataKey));
 
                     await Storage.SetDataAsync(DataKey, data);
@@ -73,12 +74,12 @@ namespace LocalStorage.PlayModeTests
 
                     Assert.IsTrue(Storage.HasKey(DataKey));
                     Assert.AreEqual(data, result);
+                    
+                    Setup.ClearPlayerPrefs();
                 }
 
                 await Test(GenericDataVector);
                 await Test(GenericDataStruct);
-                
-                Setup.ClearPlayerPrefs();
             });
 
         [Test]

@@ -1,7 +1,11 @@
-using System.Threading.Tasks;
+using System.Collections;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using LocalStorage.Providers;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using static LocalStorage.PlayModeTests.Constants.Instances;
+using static LocalStorage.PlayModeTests.Constants.Data;
 
 namespace LocalStorage.PlayModeTests
 {
@@ -20,24 +24,30 @@ namespace LocalStorage.PlayModeTests
         [TestCaseSource(nameof(_dataTransforms))]
         public void DataTransform_ApplyReverse(IDataTransform dataTransform)
         {
-            var data = Constants.Data.LoremIpsum.ToBytes();
-            var applied = dataTransform.Apply(data);
+            var applied = dataTransform.Apply(TestByteData);
             var result = dataTransform.Reverse(applied);
 
-            Assert.AreEqual(data, result);
+            Assert.AreEqual(TestByteData, result);
         }
 
-        [Test]
-        [TestCaseSource(nameof(_dataTransforms))]
-        public void DataTransform_ApplyReverseAsync(IDataTransform dataTransform)
-        {
-            var data = Constants.Data.LoremIpsum.ToBytes();
-            var applied = Task.Run(async () => await dataTransform.ApplyAsync(data))
-                .GetAwaiter().GetResult();
-            var result = Task.Run(async () => await dataTransform.ReverseAsync(applied))
-                .GetAwaiter().GetResult();
+        [UnityTest]
+        public IEnumerator DataTransform_ApplyReverseAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                async UniTask Test(byte[] data, IDataTransform dataTransform)
+                {
+                    var applied = await dataTransform.ApplyAsync(data);
+                    var result = await dataTransform.ReverseAsync(applied);
 
-            Assert.AreEqual(data, result);
-        }
+                    Assert.AreEqual(data, result);
+                }
+
+                foreach (var serializationProvider in _dataTransforms
+                    .Select(o => (object[]) o)
+                    .Select(objects => (IDataTransform) objects[0]))
+                {
+                    await Test(TestByteData, serializationProvider);
+                }
+            });
     }
 }

@@ -1,6 +1,9 @@
-using System.Threading.Tasks;
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using static LocalStorage.PlayModeTests.Constants.Instances;
+using static LocalStorage.PlayModeTests.Constants.Data;
 
 namespace LocalStorage.PlayModeTests
 {
@@ -8,7 +11,7 @@ namespace LocalStorage.PlayModeTests
     public class DeflateDataTransformTests
     {
         [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestsByteData))]
         public void DataTransform_Apply(byte[] data)
         {
             var result = DeflateDT.Apply(data);
@@ -16,18 +19,17 @@ namespace LocalStorage.PlayModeTests
             Assert.AreEqual(data, result.ReadDeflate());
         }
 
-        [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
-        public void DataTransform_ApplyAsync(byte[] data)
-        {
-            var result = Task.Run(async () => await DeflateDT.ApplyAsync(data))
-                .GetAwaiter().GetResult();
+        [UnityTest]
+        public IEnumerator DataTransform_ApplyAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var result = await DeflateDT.ApplyAsync(TestByteData);
 
-            Assert.AreEqual(data, result.ReadDeflate());
-        }
+                Assert.AreEqual(TestByteData, result.ReadDeflate());
+            });
 
         [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestsByteData))]
         public void DataTransform_Reverse(byte[] data)
         {
             var compressed = data.WriteDeflate();
@@ -37,16 +39,15 @@ namespace LocalStorage.PlayModeTests
             Assert.AreEqual(data, result);
         }
 
-        [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
-        public void DataTransform_ReverseAsync(byte[] data)
-        {
-            var compressed = data.WriteDeflate();
+        [UnityTest]
+        public IEnumerator DataTransform_ReverseAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var compressed = TestByteData.WriteDeflate();
+                
+                var result = await DeflateDT.ReverseAsync(compressed);
 
-            var result = Task.Run(async () => await DeflateDT.ReverseAsync(compressed))
-                .GetAwaiter().GetResult();
-
-            Assert.AreEqual(data, result);
-        }
+                Assert.AreEqual(TestByteData, result);
+            });
     }
 }

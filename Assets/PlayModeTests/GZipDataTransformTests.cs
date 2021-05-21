@@ -1,6 +1,9 @@
-using System.Threading.Tasks;
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using static LocalStorage.PlayModeTests.Constants.Instances;
+using static LocalStorage.PlayModeTests.Constants.Data;
 
 namespace LocalStorage.PlayModeTests
 {
@@ -8,7 +11,7 @@ namespace LocalStorage.PlayModeTests
     public class GZipDataTransformTests
     {
         [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(TestsByteData))]
         public void DataTransform_Apply(byte[] data)
         {
             var result = GZipDT.Apply(data);
@@ -16,18 +19,17 @@ namespace LocalStorage.PlayModeTests
             Assert.AreEqual(data, result.ReadGzip());
         }
 
-        [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
-        public void DataTransform_ApplyAsync(byte[] data)
-        {
-            var result = Task.Run(async () => await GZipDT.ApplyAsync(data))
-                .GetAwaiter().GetResult();
+        [UnityTest]
+        public IEnumerator DataTransform_ApplyAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var result =  await GZipDT.ApplyAsync(TestByteData);
 
-            Assert.AreEqual(data, result.ReadGzip());
-        }
+                Assert.AreEqual(TestByteData, result.ReadGzip());
+            });
 
         [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
+        [TestCaseSource(typeof(Constants.Data), nameof(TestsByteData))]
         public void DataTransform_Reverse(byte[] data)
         {
             var compressed = data.WriteGZip();
@@ -37,16 +39,15 @@ namespace LocalStorage.PlayModeTests
             Assert.AreEqual(data, result);
         }
 
-        [Test]
-        [TestCaseSource(typeof(Constants.Data), nameof(Constants.Data.TestByteData))]
-        public void DataTransform_ReverseAsync(byte[] data)
-        {
-            var compressed = data.WriteGZip();
+        [UnityTest]
+        public IEnumerator DataTransform_ReverseAsync()
+            => UniTask.ToCoroutine(async () =>
+            {
+                var compressed = TestByteData.WriteGZip();
 
-            var result = Task.Run(async () => await GZipDT.ReverseAsync(compressed))
-                .GetAwaiter().GetResult();
+                var result = await GZipDT.ReverseAsync(compressed);
 
-            Assert.AreEqual(data, result);
-        }
+                Assert.AreEqual(TestByteData, result);
+            });
     }
 }
