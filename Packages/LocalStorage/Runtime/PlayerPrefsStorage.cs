@@ -9,18 +9,18 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class PlayerPrefsStorage : IPlayerPrefsStorage
+    public class PlayerPrefsStorage : IPlayerPrefsStorageAsync
     {
-        private readonly ISerializationProvider _serializationProvider;
+        private readonly ISerializationProviderAsync _serializationProvider;
         private readonly bool _autoSaveEnabled;
 
         [RequiredMember]
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider)
+        public PlayerPrefsStorage(ISerializationProviderAsync serializationProvider)
             : this(serializationProvider, false)
         {
         }
 
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider, bool autoSaveEnabled)
+        public PlayerPrefsStorage(ISerializationProviderAsync serializationProvider, bool autoSaveEnabled)
         {
             _serializationProvider = serializationProvider ??
                                      throw new ArgumentNullException(nameof(serializationProvider));
@@ -109,18 +109,5 @@ namespace LocalStorage
 
         private byte[] GetBytes(string key) =>
             Convert.FromBase64String(GetString(key));
-    }
-
-    public class PlayerPrefsStorage<T> : PlayerPrefsStorage, IPlayerPrefsStorage<T>
-        where T : ISerializationProvider
-    {
-        [RequiredMember]
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider) : base(serializationProvider)
-        {
-        }
-
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider, bool autoSaveEnabled) : base(serializationProvider, autoSaveEnabled)
-        {
-        }
     }
 }

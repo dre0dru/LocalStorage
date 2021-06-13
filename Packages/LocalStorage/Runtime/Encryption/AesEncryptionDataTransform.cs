@@ -8,7 +8,7 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage.Encryption
 {
-    public class AesEncryptionDataTransform : IDataTransform
+    public class AesEncryptionDataTransform : IDataTransformAsync
     {
         private readonly IEncryptionSettings _encryptionSettings;
 

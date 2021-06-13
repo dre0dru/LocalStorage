@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LocalStorage.Compression
 {
-    public class DeflateDataTransform : IDataTransform
+    public class DeflateDataTransform : IDataTransformAsync
     {
         public byte[] Apply(byte[] data)
         {

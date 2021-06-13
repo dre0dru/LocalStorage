@@ -8,14 +8,14 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class FileStorage : IFileStorage
+    public class FileStorage : IFileStorageAsync
     {
-        private readonly ISerializationProvider _serializationProvider;
-        private readonly IFileProvider _fileProvider;
+        private readonly ISerializationProviderAsync _serializationProvider;
+        private readonly IFileProviderAsync _fileProvider;
 
         [RequiredMember]
-        public FileStorage(ISerializationProvider serializationProvider,
-            IFileProvider fileProvider)
+        public FileStorage(ISerializationProviderAsync serializationProvider,
+            IFileProviderAsync fileProvider)
         {
             _serializationProvider = serializationProvider ??
                                      throw new ArgumentNullException(nameof(serializationProvider));
@@ -65,15 +65,5 @@ namespace LocalStorage
 
         public bool FileExists(string fileName) =>
             _fileProvider.FileExists(fileName);
-    }
-
-    public class FileStorage<TSerialization> : FileStorage, IFileStorage<TSerialization>
-        where TSerialization : ISerializationProvider
-    {
-        [RequiredMember]
-        public FileStorage(TSerialization serializationProvider, IFileProvider fileProvider) : base(
-            serializationProvider, fileProvider)
-        {
-        }
     }
 }

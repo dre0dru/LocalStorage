@@ -8,13 +8,13 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage.Providers
 {
-    public class CombinedDataTransform : IDataTransform
+    public class CombinedDataTransform : IDataTransformAsync
     {
-        private readonly IDataTransform _firstTransform;
-        private readonly IDataTransform _secondTransform;
+        private readonly IDataTransformAsync _firstTransform;
+        private readonly IDataTransformAsync _secondTransform;
 
         [RequiredMember]
-        public CombinedDataTransform(IDataTransform firstTransform, IDataTransform secondTransform)
+        public CombinedDataTransform(IDataTransformAsync firstTransform, IDataTransformAsync secondTransform)
         {
             _firstTransform = firstTransform ??
                               throw new ArgumentNullException(nameof(firstTransform));

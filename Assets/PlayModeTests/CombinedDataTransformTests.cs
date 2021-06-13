@@ -22,7 +22,7 @@ namespace LocalStorage.PlayModeTests
 
         [Test]
         [TestCaseSource(nameof(_dataTransforms))]
-        public void DataTransform_ApplyReverse(IDataTransform dataTransform)
+        public void DataTransform_ApplyReverse(IDataTransformAsync dataTransform)
         {
             var applied = dataTransform.Apply(TestByteData);
             var result = dataTransform.Reverse(applied);
@@ -34,7 +34,7 @@ namespace LocalStorage.PlayModeTests
         public IEnumerator DataTransform_ApplyReverseAsync()
             => UniTask.ToCoroutine(async () =>
             {
-                async UniTask Test(byte[] data, IDataTransform dataTransform)
+                async UniTask Test(byte[] data, IDataTransformAsync dataTransform)
                 {
                     var applied = await dataTransform.ApplyAsync(data);
                     var result = await dataTransform.ReverseAsync(applied);
@@ -44,7 +44,7 @@ namespace LocalStorage.PlayModeTests
 
                 foreach (var serializationProvider in _dataTransforms
                     .Select(o => (object[]) o)
-                    .Select(objects => (IDataTransform) objects[0]))
+                    .Select(objects => (IDataTransformAsync) objects[0]))
                 {
                     await Test(TestByteData, serializationProvider);
                 }

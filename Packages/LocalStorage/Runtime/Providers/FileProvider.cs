@@ -9,7 +9,7 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage.Providers
 {
-    public class FileProvider : IFileProvider
+    public class FileProvider : IFileProviderAsync
     {
         private readonly string _path;
 

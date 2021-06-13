@@ -8,15 +8,15 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage.Providers
 {
-    public class DataTransformSerializationProvider : ISerializationProvider
+    public class DataTransformSerializationProvider : ISerializationProviderAsync
     {
-        private readonly ISerializationProvider _baseProvider;
+        private readonly ISerializationProviderAsync _baseProvider;
 
-        private readonly IDataTransform _dataTransform;
+        private readonly IDataTransformAsync _dataTransform;
 
         [RequiredMember]
-        public DataTransformSerializationProvider(ISerializationProvider baseProvider,
-            IDataTransform dataTransform)
+        public DataTransformSerializationProvider(ISerializationProviderAsync baseProvider,
+            IDataTransformAsync dataTransform)
         {
             _baseProvider = baseProvider ??
                             throw new ArgumentNullException(nameof(baseProvider));

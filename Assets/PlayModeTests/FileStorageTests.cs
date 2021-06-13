@@ -31,7 +31,7 @@ namespace LocalStorage.PlayModeTests
         [Test]
         [TestCaseSource(nameof(ArgumentNullExceptionCases))]
         public void Storage_ThrowsArgumentNullException(
-            ISerializationProvider serializationProvider, IFileProvider fileProvider)
+            ISerializationProviderAsync serializationProvider, IFileProviderAsync fileProvider)
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -41,7 +41,7 @@ namespace LocalStorage.PlayModeTests
 
         [Test]
         [TestCaseSource(nameof(StorageInstances))]
-        public void Storage_SaveLoad(IFileStorage storage)
+        public void Storage_SaveLoad(IFileStorageAsync storage)
         {
             //Can't use [TestCase] or [TestCaseSource]
             //because of IL2CPP AOT compilation
@@ -70,7 +70,7 @@ namespace LocalStorage.PlayModeTests
             {
                 //Can't use [TestCase] or [TestCaseSource]
                 //because of IL2CPP AOT compilation
-                async UniTask Test<T>(T data, IFileStorage storage)
+                async UniTask Test<T>(T data, IFileStorageAsync storage)
                 {
                     Setup.DeleteFile(FilePath);
 
@@ -89,7 +89,7 @@ namespace LocalStorage.PlayModeTests
 
                 foreach (var storage in StorageInstances
                     .Select(o => (object[]) o)
-                    .Select(objects => (IFileStorage) objects[0]))
+                    .Select(objects => (IFileStorageAsync) objects[0]))
                 {
                     await Test(GenericDataVector, storage);
                     await Test(GenericDataStruct, storage);

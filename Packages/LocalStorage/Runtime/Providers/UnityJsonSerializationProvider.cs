@@ -9,7 +9,7 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage.Providers
 {
-    public class UnityJsonSerializationProvider : ISerializationProvider
+    public class UnityJsonSerializationProvider : ISerializationProviderAsync
     {
         private readonly bool _prettyPrint;
 

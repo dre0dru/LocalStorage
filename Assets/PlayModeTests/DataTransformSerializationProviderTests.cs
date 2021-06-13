@@ -30,8 +30,8 @@ namespace LocalStorage.PlayModeTests
 
         [Test]
         [TestCaseSource(nameof(_argumentNullExceptionCases))]
-        public void SerializationProvider_ThrowsArgumentNullException(ISerializationProvider serializationProvider,
-            IDataTransform dataTransform)
+        public void SerializationProvider_ThrowsArgumentNullException(ISerializationProviderAsync serializationProvider,
+            IDataTransformAsync dataTransform)
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -41,7 +41,7 @@ namespace LocalStorage.PlayModeTests
 
         [Test]
         [TestCaseSource(nameof(_serializationProviders))]
-        public void SerializationProvider_SerializeDeserialize(ISerializationProvider serializationProvider)
+        public void SerializationProvider_SerializeDeserialize(ISerializationProviderAsync serializationProvider)
         {
             void Test<T>(T data)
             {
@@ -59,7 +59,7 @@ namespace LocalStorage.PlayModeTests
         public IEnumerator SerializationProvider_SerializeDeserializeAsync()
             => UniTask.ToCoroutine(async () =>
             {
-                async UniTask Test<T>(T data, ISerializationProvider serializationProvider)
+                async UniTask Test<T>(T data, ISerializationProviderAsync serializationProvider)
                 {
                     var serialized =await serializationProvider.SerializeAsync(data);
                     var deserialized = await serializationProvider.DeserializeAsync<T>(serialized);
@@ -69,7 +69,7 @@ namespace LocalStorage.PlayModeTests
 
                 foreach (var serializationProvider in _serializationProviders
                     .Select(o => (object[]) o)
-                    .Select(objects => (ISerializationProvider) objects[0]))
+                    .Select(objects => (ISerializationProviderAsync) objects[0]))
                 {
                     await Test(GenericDataVector, serializationProvider);
                     await Test(GenericDataStruct, serializationProvider);

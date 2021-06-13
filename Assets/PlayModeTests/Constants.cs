@@ -26,14 +26,14 @@ namespace LocalStorage.PlayModeTests
             }
 
             public static readonly IEncryptionSettings Es = new EncryptionSettings();
-            public static readonly IDataTransform AesDT = new AesEncryptionDataTransform(Es);
-            public static readonly IDataTransform DeflateDT = new DeflateDataTransform();
-            public static readonly IDataTransform GZipDT = new GZipDataTransform();
+            public static readonly IDataTransformAsync AesDT = new AesEncryptionDataTransform(Es);
+            public static readonly IDataTransformAsync DeflateDT = new DeflateDataTransform();
+            public static readonly IDataTransformAsync GZipDT = new GZipDataTransform();
 
-            public static readonly ISerializationProvider UnityJsonSP
+            public static readonly ISerializationProviderAsync UnityJsonSP
                 = new UnityJsonSerializationProvider();
 
-            public static readonly IFileProvider FP = new FileProvider();
+            public static readonly IFileProviderAsync FP = new FileProvider();
         }
 
         public static class Data

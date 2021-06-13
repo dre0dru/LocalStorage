@@ -10,13 +10,16 @@ namespace LocalStorage
     {
         byte[] Apply(byte[] data);
 
+        byte[] Reverse(byte[] data);
+    }
+
+    public interface IDataTransformAsync : IDataTransform
+    {
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         UniTask<byte[]> ApplyAsync(byte[] data);
         #else
         Task<byte[]> ApplyAsync(byte[] data);
         #endif
-
-        byte[] Reverse(byte[] data);
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         UniTask<byte[]> ReverseAsync(byte[] data);

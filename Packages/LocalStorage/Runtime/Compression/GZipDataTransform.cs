@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LocalStorage.Compression
 {
-    public class GZipDataTransform : IDataTransform
+    public class GZipDataTransform : IDataTransformAsync
     {
         public byte[] Apply(byte[] data)
         {

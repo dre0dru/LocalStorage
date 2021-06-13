@@ -11,7 +11,7 @@ namespace LocalStorage.PlayModeTests
     [TestFixture]
     public class PlayerPrefsStorageTests
     {
-        private static readonly IPlayerPrefsStorage Storage =
+        private static readonly IPlayerPrefsStorageAsync Storage =
             new PlayerPrefsStorage(UnityJsonSP, true);
 
         [SetUp]
