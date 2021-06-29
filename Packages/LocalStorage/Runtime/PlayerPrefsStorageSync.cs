@@ -1,26 +1,21 @@
 using System;
-#if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-using Cysharp.Threading.Tasks;
-#else
-using System.Threading.Tasks;
-#endif
 using UnityEngine;
 using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class PlayerPrefsStorage : IPlayerPrefsStorage
+    public class PlayerPrefsStorageSync : IPlayerPrefsStorageSync
     {
-        private readonly ISerializationProvider _serializationProvider;
+        private readonly ISerializationProviderSync _serializationProvider;
         private readonly bool _autoSaveEnabled;
 
         [RequiredMember]
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider)
+        public PlayerPrefsStorageSync(ISerializationProviderSync serializationProvider)
             : this(serializationProvider, false)
         {
         }
 
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider, bool autoSaveEnabled)
+        public PlayerPrefsStorageSync(ISerializationProviderSync serializationProvider, bool autoSaveEnabled)
         {
             _serializationProvider = serializationProvider ??
                                      throw new ArgumentNullException(nameof(serializationProvider));
@@ -32,24 +27,6 @@ namespace LocalStorage
 
         public T GetData<T>(string key) =>
             _serializationProvider.Deserialize<T>(GetBytes(key));
-
-        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-        public UniTask SetDataAsync<T>(string key, T data) =>
-            _serializationProvider.SerializeAsync(data)
-                .ContinueWith(bytes => SetBytes(key, bytes));
-        #else
-        public Task SetDataAsync<T>(string key, T data) =>
-            _serializationProvider.SerializeAsync(data)
-                .ContinueWith(task => SetBytes(key, task.Result), TaskScheduler.FromCurrentSynchronizationContext());
-        #endif
-
-        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-        public UniTask<T> GetDataAsync<T>(string key) =>
-            _serializationProvider.DeserializeAsync<T>(GetBytes(key));
-        #else
-        public Task<T> GetDataAsync<T>(string key) =>
-            _serializationProvider.DeserializeAsync<T>(GetBytes(key));
-        #endif
 
         public void SetFloat(string key, float value)
         {
