@@ -1,12 +1,12 @@
 using System;
+using UnityEngine.Scripting;
 #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
 using Cysharp.Threading.Tasks;
 #else
 using System.Threading.Tasks;
 #endif
-using UnityEngine.Scripting;
 
-namespace LocalStorage.Providers
+namespace LocalStorage.Serialization
 {
     public class DataTransformSerializationProvider : ISerializationProvider
     {
@@ -26,6 +26,9 @@ namespace LocalStorage.Providers
 
         public byte[] Serialize<T>(T data) =>
             _dataTransform.Apply(_baseProvider.Serialize(data));
+        
+        public T Deserialize<T>(byte[] data) =>
+            _baseProvider.Deserialize<T>(_dataTransform.Reverse(data));
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask<byte[]> SerializeAsync<T>(T data) =>
@@ -37,9 +40,6 @@ namespace LocalStorage.Providers
                 .ContinueWith(task => _dataTransform.ApplyAsync(task.Result))
                 .Unwrap();
         #endif
-
-        public T Deserialize<T>(byte[] data) =>
-            _baseProvider.Deserialize<T>(_dataTransform.Reverse(data));
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask<T> DeserializeAsync<T>(byte[] data) =>
