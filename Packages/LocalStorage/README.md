@@ -164,12 +164,13 @@ IDataTransform customDataTransform = new CustomDataTransform();
 IDataTransform multipleCombinedDataTransform =
     new CombinedDataTransform(customDataTransform, combinedDataTransform);
 ```
-## Generic storage usage
-There are generic implementations and interfaces of storage classes:
-- `IFileStorage<TSerialization>`
-- `IPlayerPrefsStorage<TSerialization>`
+## Sync/async API
+All interfaces come in 3 variants:
+- Sync API
+- Async API
+- Both sync and async
 
-Can be used with `DI containers` to bind multiple implementations.
+Implementations that depends on mentioned interfaces have same 3 variants, e.g. `FileStorage` for both sync and async API, `FileStorageSync` for sync API only and `FileStorageAsync` for async API only.
 
 # License
 The software released under the terms of the [MIT license](./LICENSE.md).
