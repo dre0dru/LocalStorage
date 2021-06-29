@@ -1,13 +1,11 @@
-using System.Text;
+using UnityEngine.Scripting;
 #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
 using Cysharp.Threading.Tasks;
 #else
 using System.Threading.Tasks;
 #endif
-using UnityEngine;
-using UnityEngine.Scripting;
 
-namespace LocalStorage.Providers
+namespace LocalStorage.Serialization
 {
     public class UnityJsonSerializationProvider : ISerializationProvider
     {
@@ -18,29 +16,31 @@ namespace LocalStorage.Providers
         {
         }
 
-        public UnityJsonSerializationProvider(bool prettyPrint) =>
+        public UnityJsonSerializationProvider(bool prettyPrint)
+        {
             _prettyPrint = prettyPrint;
+        }
 
         public byte[] Serialize<T>(T data) =>
-            Encoding.UTF8.GetBytes(JsonUtility.ToJson(data, _prettyPrint));
+            JsonSerialize.ToUnityJsonBytes(data, _prettyPrint);
+
+        public T Deserialize<T>(byte[] data) =>
+            JsonSerialize.FromUnityJsonBytes<T>(data);
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask<byte[]> SerializeAsync<T>(T data) =>
-            UniTask.FromResult(Serialize(data));
+            this.SerializeFakeAsync(data);
         #else
         public Task<byte[]> SerializeAsync<T>(T data) =>
-            Task.FromResult(Serialize(data));
+            this.SerializeFakeAsync(data);
         #endif
-
-        public T Deserialize<T>(byte[] data) =>
-            JsonUtility.FromJson<T>(Encoding.UTF8.GetString(data));
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask<T> DeserializeAsync<T>(byte[] data) =>
-            UniTask.FromResult(Deserialize<T>(data));
+            this.DeserializeFakeAsync<T>(data);
         #else
         public Task<T> DeserializeAsync<T>(byte[] data) =>
-            Task.FromResult(Deserialize<T>(data));
+            this.DeserializeFakeAsync<T>(data);
         #endif
     }
 }

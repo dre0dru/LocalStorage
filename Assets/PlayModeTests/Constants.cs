@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using LocalStorage.Compression;
 using LocalStorage.Encryption;
-using LocalStorage.Providers;
+using LocalStorage.Serialization;
 using UnityEngine;
 
 namespace LocalStorage.PlayModeTests

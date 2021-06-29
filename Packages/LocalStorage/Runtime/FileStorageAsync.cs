@@ -8,28 +8,20 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class FileStorage : IFileStorage
+    public class FileStorageAsync : IFileStorageAsync
     {
-        private readonly ISerializationProvider _serializationProvider;
-        private readonly IFileProvider _fileProvider;
+        private readonly ISerializationProviderAsync _serializationProvider;
+        private readonly IFileProviderAsync _fileProvider;
 
         [RequiredMember]
-        public FileStorage(ISerializationProvider serializationProvider,
-            IFileProvider fileProvider)
+        public FileStorageAsync(ISerializationProviderAsync serializationProvider,
+            IFileProviderAsync fileProvider)
         {
             _serializationProvider = serializationProvider ??
                                      throw new ArgumentNullException(nameof(serializationProvider));
             _fileProvider = fileProvider ??
                             throw new ArgumentNullException(nameof(fileProvider));
         }
-
-        public void Save<TData>(TData data, string fileName) =>
-            _fileProvider.Write(_serializationProvider.Serialize(data),
-                GetFilePath(fileName));
-
-        public TData Load<TData>(string fileName) =>
-            _serializationProvider
-                .Deserialize<TData>(_fileProvider.Read(GetFilePath(fileName)));
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask SaveAsync<TData>(TData data, string fileName) =>

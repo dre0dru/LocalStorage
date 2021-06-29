@@ -1,27 +1,28 @@
-#if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-using Cysharp.Threading.Tasks;
-#else
-using System.Threading.Tasks;
-#endif
-
 namespace LocalStorage
 {
-    public interface ISerializationProvider
+    public interface ISerializationProvider : ISerializationProviderSync, ISerializationProviderAsync
+    {
+    }
+
+    public interface ISerializationProviderSync
     {
         byte[] Serialize<T>(T data);
 
+        T Deserialize<T>(byte[] data);
+    }
+
+    public interface ISerializationProviderAsync
+    {
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-        UniTask<byte[]> SerializeAsync<T>(T data);
+        Cysharp.Threading.Tasks.UniTask<byte[]> SerializeAsync<T>(T data);
         #else
-        Task<byte[]> SerializeAsync<T>(T data);
+        System.Threading.Tasks.Task<byte[]> SerializeAsync<T>(T data);
         #endif
 
-        T Deserialize<T>(byte[] data);
-
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-        UniTask<T> DeserializeAsync<T>(byte[] data);
+        Cysharp.Threading.Tasks.UniTask<T> DeserializeAsync<T>(byte[] data);
         #else
-        Task<T> DeserializeAsync<T>(byte[] data);
+        System.Threading.Tasks.Task<T> DeserializeAsync<T>(byte[] data);
         #endif
     }
 }

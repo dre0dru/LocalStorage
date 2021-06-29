@@ -1,29 +1,33 @@
-#if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-using Cysharp.Threading.Tasks;
-#else
-using System.Threading.Tasks;
-#endif
-
 namespace LocalStorage
 {
-    public interface IFileProvider
+    public interface IFileProvider : IFileProviderSync, IFileProviderAsync
+    {
+    }
+
+    public interface IFileProviderSync : IFileProviderCommon
     {
         void Write(byte[] output, string fileName);
 
-        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-        UniTask WriteAsync(byte[] output, string fileName);
-        #else
-        Task WriteAsync(byte[] output, string fileName);
-        #endif
-
         byte[] Read(string fileName);
+    }
 
+    public interface IFileProviderAsync : IFileProviderCommon
+    {
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
-        UniTask<byte[]> ReadAsync(string fileName);
+        Cysharp.Threading.Tasks.UniTask WriteAsync(byte[] output, string fileName);
         #else
-        Task<byte[]> ReadAsync(string fileName);
+        System.Threading.Tasks.Task WriteAsync(byte[] output, string fileName);
         #endif
 
+        #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
+        Cysharp.Threading.Tasks.UniTask<byte[]> ReadAsync(string fileName);
+        #else
+        System.Threading.Tasks.Task<byte[]> ReadAsync(string fileName);
+        #endif
+    }
+
+    public interface IFileProviderCommon
+    {
         bool Delete(string fileName);
 
         string GetFilePath(string fileName);

@@ -9,29 +9,23 @@ using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
-    public class PlayerPrefsStorage : IPlayerPrefsStorage
+    public class PlayerPrefsStorageAsync : IPlayerPrefsStorageAsync
     {
-        private readonly ISerializationProvider _serializationProvider;
+        private readonly ISerializationProviderAsync _serializationProvider;
         private readonly bool _autoSaveEnabled;
 
         [RequiredMember]
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider)
+        public PlayerPrefsStorageAsync(ISerializationProviderAsync serializationProvider)
             : this(serializationProvider, false)
         {
         }
 
-        public PlayerPrefsStorage(ISerializationProvider serializationProvider, bool autoSaveEnabled)
+        public PlayerPrefsStorageAsync(ISerializationProviderAsync serializationProvider, bool autoSaveEnabled)
         {
             _serializationProvider = serializationProvider ??
                                      throw new ArgumentNullException(nameof(serializationProvider));
             _autoSaveEnabled = autoSaveEnabled;
         }
-
-        public void SetData<T>(string key, T data) =>
-            SetBytes(key, _serializationProvider.Serialize(data));
-
-        public T GetData<T>(string key) =>
-            _serializationProvider.Deserialize<T>(GetBytes(key));
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask SetDataAsync<T>(string key, T data) =>
