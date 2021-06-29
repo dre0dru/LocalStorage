@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/dre0dru/LocalStorage/compare/v3.1.0...v4.0.0) (2021-06-29)
+
+
+### Features
+
+* split async and sync API into different interfaces ([21a4e84](https://github.com/dre0dru/LocalStorage/commit/21a4e848d80e92402f6c3ad8aeeda2e5691d20bb))
+
+
+### BREAKING CHANGES
+
+* core interfaces changed, serialization classes moved into separate namespace, introduced sync/async only implementations for several facades, removed generic storage interfaces and implementations
+
 # [3.1.0](https://github.com/dre0dru/LocalStorage/compare/v3.0.0...v3.1.0) (2021-05-21)
 
 
