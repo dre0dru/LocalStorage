@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
@@ -8,7 +7,9 @@ namespace LocalStorage
         private readonly ISerializationProviderSync _serializationProvider;
         private readonly IFileProviderSync _fileProvider;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public FileStorageSync(ISerializationProviderSync serializationProvider,
             IFileProviderSync fileProvider)
         {

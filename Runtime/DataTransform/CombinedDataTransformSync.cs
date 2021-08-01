@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Scripting;
 
 namespace LocalStorage.DataTransform
 {
@@ -8,7 +7,9 @@ namespace LocalStorage.DataTransform
         private readonly IDataTransformSync _firstTransform;
         private readonly IDataTransformSync _secondTransform;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public CombinedDataTransformSync(IDataTransformSync firstTransform, IDataTransformSync secondTransform)
         {
             _firstTransform = firstTransform ??

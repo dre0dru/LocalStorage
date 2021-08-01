@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 #endif
 using UnityEngine;
-using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
@@ -14,7 +13,9 @@ namespace LocalStorage
         private readonly ISerializationProvider _serializationProvider;
         private readonly bool _autoSaveEnabled;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public PlayerPrefsStorage(ISerializationProvider serializationProvider)
             : this(serializationProvider, false)
         {

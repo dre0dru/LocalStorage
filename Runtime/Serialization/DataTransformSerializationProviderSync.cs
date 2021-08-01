@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Scripting;
 
 namespace LocalStorage.Serialization
 {
@@ -9,7 +8,9 @@ namespace LocalStorage.Serialization
 
         private readonly IDataTransformSync _dataTransform;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public DataTransformSerializationProviderSync(ISerializationProviderSync baseProvider,
             IDataTransformSync dataTransform)
         {

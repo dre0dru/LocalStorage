@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 #else
 using System.Threading.Tasks;
 #endif
-using UnityEngine.Scripting;
 
 namespace LocalStorage.DataTransform
 {
@@ -13,7 +12,9 @@ namespace LocalStorage.DataTransform
         private readonly IDataTransformAsync _firstTransform;
         private readonly IDataTransformAsync _secondTransform;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public CombinedDataTransformAsync(IDataTransformAsync firstTransform, IDataTransformAsync secondTransform)
         {
             _firstTransform = firstTransform ??
