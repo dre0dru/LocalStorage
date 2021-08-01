@@ -1,4 +1,3 @@
-using UnityEngine.Scripting;
 #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
 using Cysharp.Threading.Tasks;
 #else
@@ -11,7 +10,9 @@ namespace LocalStorage.Serialization
     {
         private readonly bool _prettyPrint;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public UnityJsonSerializationProvider() : this(false)
         {
         }

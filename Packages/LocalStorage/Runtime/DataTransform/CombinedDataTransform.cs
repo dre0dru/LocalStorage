@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Scripting;
 #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
 using Cysharp.Threading.Tasks;
 #else
@@ -13,7 +12,9 @@ namespace LocalStorage.DataTransform
         private readonly IDataTransform _firstTransform;
         private readonly IDataTransform _secondTransform;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public CombinedDataTransform(IDataTransform firstTransform, IDataTransform secondTransform)
         {
             _firstTransform = firstTransform ??

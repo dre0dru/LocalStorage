@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 #else
 using System.Threading.Tasks;
 #endif
-using UnityEngine.Scripting;
 
 namespace LocalStorage.Encryption
 {
@@ -12,7 +11,9 @@ namespace LocalStorage.Encryption
     {
         private readonly IEncryptionSettings _encryptionSettings;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public AesEncryptionDataTransform(IEncryptionSettings encryptionSettings)
         {
             _encryptionSettings = encryptionSettings ??

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
@@ -9,7 +8,9 @@ namespace LocalStorage
         private readonly ISerializationProviderSync _serializationProvider;
         private readonly bool _autoSaveEnabled;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public PlayerPrefsStorageSync(ISerializationProviderSync serializationProvider)
             : this(serializationProvider, false)
         {

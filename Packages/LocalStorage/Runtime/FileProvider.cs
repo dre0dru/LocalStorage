@@ -1,6 +1,5 @@
 using System.IO;
 using UnityEngine;
-using UnityEngine.Scripting;
 #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
 using Cysharp.Threading.Tasks;
 #else
@@ -13,7 +12,9 @@ namespace LocalStorage
     {
         private readonly string _path;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public FileProvider() : this(null)
         {
         }

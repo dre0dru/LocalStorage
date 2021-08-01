@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 #else
 using System.Threading.Tasks;
 #endif
-using UnityEngine.Scripting;
 
 namespace LocalStorage
 {
@@ -13,7 +12,9 @@ namespace LocalStorage
         private readonly ISerializationProvider _serializationProvider;
         private readonly IFileProvider _fileProvider;
 
-        [RequiredMember]
+        #if UNITY_2020_3_OR_NEWER
+        [UnityEngine.Scripting.RequiredMember]
+        #endif
         public FileStorage(ISerializationProvider serializationProvider,
             IFileProvider fileProvider)
         {
