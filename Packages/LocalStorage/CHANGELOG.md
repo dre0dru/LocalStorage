@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/dre0dru/LocalStorage/compare/v4.0.0...v4.0.1) (2021-08-01)
+
+
+### Bug Fixes
+
+* wrapped `RequiredMember` attribute in preprocessor directive ([b9370bf](https://github.com/dre0dru/LocalStorage/commit/b9370bfc11826e54a04703d561585c093f3fffed))
+
 # [4.0.0](https://github.com/dre0dru/LocalStorage/compare/v3.1.0...v4.0.0) (2021-06-29)
 
 
