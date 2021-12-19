@@ -16,6 +16,16 @@
             "name": "com.cysharp.unitask",
             "expression": "",
             "define": "UNITASK_SUPPORT"
+        },
+        {
+            "name": "jillejr.newtonsoft.json-for-unity",
+            "expression": "",
+            "define": "NEWTONSOFT_JSON"
+        },
+		{
+            "name": "com.unity.nuget.newtonsoft-json",
+            "expression": "",
+            "define": "NEWTONSOFT_JSON"
         }
     ],
     "noEngineReferences": false
