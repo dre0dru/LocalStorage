@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/dre0dru/LocalStorage/compare/v4.0.1...v4.1.0) (2021-12-19)
+
+
+### Features
+
+* added newtonsoft json serializer ([3e71001](https://github.com/dre0dru/LocalStorage/commit/3e7100166a2c2e523c174fca9c114e10401f19ba))
+
 ## [4.0.1](https://github.com/dre0dru/LocalStorage/compare/v4.0.0...v4.0.1) (2021-08-01)
 
 
