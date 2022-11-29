@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/dre0dru/LocalStorage/compare/v4.1.0...v5.0.0) (2022-11-29)
+
+
+### chore
+
+* updated release action, package at root ([c81ecc6](https://github.com/dre0dru/LocalStorage/commit/c81ecc6cc0c840d96da0c735d871879a2b364b85))
+
+
+### BREAKING CHANGES
+
+* namespaces changes
+
 # [4.1.0](https://github.com/dre0dru/LocalStorage/compare/v4.0.1...v4.1.0) (2021-12-19)
 
 
