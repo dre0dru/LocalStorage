@@ -23,7 +23,7 @@ namespace Dre0Dru.LocalStorage.Serialization
             Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, _serializerSettings));
 
         public T Deserialize<T>(byte[] data) =>
-            JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(data));
+            JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(data), _serializerSettings);
 
         #if !DISABLE_UNITASK_SUPPORT && UNITASK_SUPPORT
         public UniTask<byte[]> SerializeAsync<T>(T data) =>
